@@ -1,0 +1,176 @@
+{
+  "info": {
+    "_postman_id": "5c57ea9c-4ed6-4de7-88c7-3d028b5849b9",
+    "name": "Fiap PosTech 13adjt Fase1 TechChallenge",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "56523386",
+    "_collection_link": "https://go.postman.co/collection/56523386-5c57ea9c-4ed6-4de7-88c7-3d028b5849b9?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "usuarios",
+      "item": [
+        {
+          "name": "GET usuarios",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{LOCAL_HOST}}/usuarios?page=1&size=10",
+              "host": [
+                "{{LOCAL_HOST}}"
+              ],
+              "path": [
+                "usuarios"
+              ],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "size",
+                  "value": "10"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "GET usuario by id",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{LOCAL_HOST}}/usuarios/3",
+              "host": [
+                "{{LOCAL_HOST}}"
+              ],
+              "path": [
+                "usuarios",
+                "3"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "GET usuario by email",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{LOCAL_HOST}}/usuarios/email/fulano@detal.com",
+              "host": [
+                "{{LOCAL_HOST}}"
+              ],
+              "path": [
+                "usuarios",
+                "email",
+                "fulano@detal.com"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "GET usuario by nomedeusuario",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{LOCAL_HOST}}/usuarios/nomedeusuario/aferreira",
+              "host": [
+                "{{LOCAL_HOST}}"
+              ],
+              "path": [
+                "usuarios",
+                "nomedeusuario",
+                "aferreira"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "POST usuario",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"nome\": \"Antonio Ferreira\",\r\n    \"email\": \"antonio@ferreira.com\",\r\n    \"nome_de_usuario\": \"aferreira\",\r\n    \"senha\": \"abc123\",\r\n    \"logradouro\": \"Rua Fernando Pessoa\",\r\n    \"numero\": \"2654\",\r\n    \"complemento\": \"fundos\",\r\n    \"bairro\": \"Santa Cecília\",\r\n    \"cidade\": \"Atos Portos\",\r\n    \"estado\": \"SP\",\r\n    \"cep\": \"09875-100\",\r\n    \"perfis\": [\r\n        \"usuario\",\r\n        \"proprietario\"\r\n        ]\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{LOCAL_HOST}}/usuarios",
+              "host": [
+                "{{LOCAL_HOST}}"
+              ],
+              "path": [
+                "usuarios"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "PUT usuario",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"nome\": \"Antonio Ferreira\",\r\n    \"email\": \"antonio@ferreira.com\",\r\n    \"nome_de_usuario\": \"aferreira\",\r\n    \"senha\": \"www777\",\r\n    \"logradouro\": \"Rua Fernando Pessoa\",\r\n    \"numero\": \"2654\",\r\n    \"complemento\": \"fundos\",\r\n    \"bairro\": \"Santa Cecília\",\r\n    \"cidade\": \"Atos Portos\",\r\n    \"estado\": \"SP\",\r\n    \"cep\": \"09875-111\",\r\n    \"perfis\": [\r\n        \"proprietario\"\r\n        ]\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{LOCAL_HOST}}/usuarios/3",
+              "host": [
+                "{{LOCAL_HOST}}"
+              ],
+              "path": [
+                "usuarios",
+                "3"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "DELETE usuario",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{LOCAL_HOST}}/usuarios/4",
+              "host": [
+                "{{LOCAL_HOST}}"
+              ],
+              "path": [
+                "usuarios",
+                "4"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "LOCAL_HOST",
+      "value": ""
+    }
+  ]
+}
