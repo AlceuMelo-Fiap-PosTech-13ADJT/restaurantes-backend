@@ -170,7 +170,7 @@
   "variable": [
     {
       "key": "LOCAL_HOST",
-      "value": ""
+      "value": "http://localhost:8080"
     }
   ]
 }
