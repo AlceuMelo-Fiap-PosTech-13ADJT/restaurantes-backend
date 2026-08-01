@@ -64,7 +64,7 @@ public class UsuarioController {
     public ResponseEntity<Void> saveUsuario(
             @RequestBody Usuario usuario
     ) {
-        logger.info("POST -> /pessoas");
+        logger.info("POST -> /usuarios");
         this.usuarioService.saveUsuario(usuario);
         var status = HttpStatus.CREATED;
         return ResponseEntity.status(status.value()).build();
