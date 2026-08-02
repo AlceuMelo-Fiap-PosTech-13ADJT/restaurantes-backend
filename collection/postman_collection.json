@@ -43,13 +43,13 @@
             "method": "GET",
             "header": [],
             "url": {
-              "raw": "{{LOCAL_HOST}}/usuarios/3",
+              "raw": "{{LOCAL_HOST}}/usuarios/1",
               "host": [
                 "{{LOCAL_HOST}}"
               ],
               "path": [
                 "usuarios",
-                "3"
+                "1"
               ]
             }
           },
@@ -80,14 +80,14 @@
             "method": "GET",
             "header": [],
             "url": {
-              "raw": "{{LOCAL_HOST}}/usuarios/nomedeusuario/aferreira",
+              "raw": "{{LOCAL_HOST}}/usuarios/nomedeusuario/bsilva",
               "host": [
                 "{{LOCAL_HOST}}"
               ],
               "path": [
                 "usuarios",
                 "nomedeusuario",
-                "aferreira"
+                "bsilva"
               ]
             }
           },
@@ -100,7 +100,7 @@
             "header": [],
             "body": {
               "mode": "raw",
-              "raw": "{\r\n    \"nome\": \"Antonio Ferreira\",\r\n    \"email\": \"antonio@ferreira.com\",\r\n    \"nome_de_usuario\": \"aferreira\",\r\n    \"senha\": \"abc123\",\r\n    \"logradouro\": \"Rua Fernando Pessoa\",\r\n    \"numero\": \"2654\",\r\n    \"complemento\": \"fundos\",\r\n    \"bairro\": \"Santa Cecília\",\r\n    \"cidade\": \"Atos Portos\",\r\n    \"estado\": \"SP\",\r\n    \"cep\": \"09875-100\",\r\n    \"perfis\": [\r\n        \"usuario\",\r\n        \"proprietario\"\r\n        ]\r\n}",
+              "raw": "{\r\n    \"nome\": \"Antonio Ferreira\",\r\n    \"email\": \"antonio@ferreira.com\",\r\n    \"nome_de_usuario\": \"aferreira\",\r\n    \"senha\": \"abc123\",\r\n    \"logradouro\": \"Rua Fernando Pessoa\",\r\n    \"numero\": \"2654\",\r\n    \"complemento\": \"fundos\",\r\n    \"bairro\": \"Santa Cecília\",\r\n    \"cidade\": \"Atos Portos\",\r\n    \"estado\": \"SP\",\r\n    \"cep\": \"09875-100\",\r\n    \"perfil\": \"CLIENTE\"\r\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -126,7 +126,7 @@
             "header": [],
             "body": {
               "mode": "raw",
-              "raw": "{\r\n    \"nome\": \"Antonio Ferreira\",\r\n    \"email\": \"antonio@ferreira.com\",\r\n    \"nome_de_usuario\": \"aferreira\",\r\n    \"senha\": \"www777\",\r\n    \"logradouro\": \"Rua Fernando Pessoa\",\r\n    \"numero\": \"2654\",\r\n    \"complemento\": \"fundos\",\r\n    \"bairro\": \"Santa Cecília\",\r\n    \"cidade\": \"Atos Portos\",\r\n    \"estado\": \"SP\",\r\n    \"cep\": \"09875-111\",\r\n    \"perfis\": [\r\n        \"proprietario\"\r\n        ]\r\n}",
+              "raw": "{\r\n    \"nome\": \"Antonio Ferreira\",\r\n    \"email\": \"antonio@ferreira.com\",\r\n    \"nome_de_usuario\": \"aferreira\",\r\n    \"senha\": \"www777\",\r\n    \"logradouro\": \"Rua Fernando Pessoa\",\r\n    \"numero\": \"2654\",\r\n    \"complemento\": \"fundos\",\r\n    \"bairro\": \"Santa Cecília\",\r\n    \"cidade\": \"Atos Portos\",\r\n    \"estado\": \"SP\",\r\n    \"cep\": \"09875-111\",\r\n    \"perfil\": \"PROPRIETARIO\"\r\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -152,13 +152,13 @@
             "method": "DELETE",
             "header": [],
             "url": {
-              "raw": "{{LOCAL_HOST}}/usuarios/4",
+              "raw": "{{LOCAL_HOST}}/usuarios/2",
               "host": [
                 "{{LOCAL_HOST}}"
               ],
               "path": [
                 "usuarios",
-                "4"
+                "2"
               ]
             }
           },

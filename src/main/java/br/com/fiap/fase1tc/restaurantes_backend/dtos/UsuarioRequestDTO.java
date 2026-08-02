@@ -1,4 +1,4 @@
-package br.com.fiap.fase1tc.restaurantes_backend.entities;
+package br.com.fiap.fase1tc.restaurantes_backend.dtos;
 
 import br.com.fiap.fase1tc.restaurantes_backend.entities.enums.PerfilUsuario;
 import lombok.*;
@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @EqualsAndHashCode
 @ToString
-public abstract class Usuario {
+public class UsuarioRequestDTO {
     private Long id;
     private String nome;
     private String email;
@@ -28,7 +28,4 @@ public abstract class Usuario {
     private LocalDateTime created_at;
     private LocalDateTime updated_at;
 
-    protected Usuario(PerfilUsuario perfil) {
-        this.perfil = perfil;
-    }
 }

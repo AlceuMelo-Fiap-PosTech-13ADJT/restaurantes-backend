@@ -1,6 +1,8 @@
 package br.com.fiap.fase1tc.restaurantes_backend.controllers;
 
+import br.com.fiap.fase1tc.restaurantes_backend.dtos.UsuarioRequestDTO;
 import br.com.fiap.fase1tc.restaurantes_backend.entities.Usuario;
+import br.com.fiap.fase1tc.restaurantes_backend.factories.UsuarioFactory;
 import br.com.fiap.fase1tc.restaurantes_backend.services.UsuarioService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -62,9 +64,21 @@ public class UsuarioController {
 
     @PostMapping
     public ResponseEntity<Void> saveUsuario(
-            @RequestBody Usuario usuario
+            @RequestBody UsuarioRequestDTO usuarioDTO
     ) {
         logger.info("POST -> /usuarios");
+        Usuario usuario = UsuarioFactory.createUsuario(usuarioDTO.getPerfil());
+        usuario.setNome(usuarioDTO.getNome());
+        usuario.setEmail(usuarioDTO.getEmail());
+        usuario.setNome_de_usuario(usuarioDTO.getNome_de_usuario());
+        usuario.setSenha(usuarioDTO.getSenha());
+        usuario.setLogradouro(usuarioDTO.getLogradouro());
+        usuario.setNumero(usuarioDTO.getNumero());
+        usuario.setComplemento(usuarioDTO.getComplemento());
+        usuario.setBairro(usuarioDTO.getBairro());
+        usuario.setCidade(usuarioDTO.getCidade());
+        usuario.setEstado(usuarioDTO.getEstado());
+        usuario.setCep(usuarioDTO.getCep());
         this.usuarioService.saveUsuario(usuario);
         var status = HttpStatus.CREATED;
         return ResponseEntity.status(status.value()).build();
@@ -73,9 +87,21 @@ public class UsuarioController {
     @PutMapping("/{id}")
     public ResponseEntity<Void> updateUsuario(
             @PathVariable("id") Long id,
-            @RequestBody Usuario usuario
+            @RequestBody  UsuarioRequestDTO usuarioDTO
     ) {
         logger.info("PUT -> /usuarios/" + id);
+        Usuario usuario = UsuarioFactory.createUsuario(usuarioDTO.getPerfil());
+        usuario.setNome(usuarioDTO.getNome());
+        usuario.setEmail(usuarioDTO.getEmail());
+        usuario.setNome_de_usuario(usuarioDTO.getNome_de_usuario());
+        usuario.setSenha(usuarioDTO.getSenha());
+        usuario.setLogradouro(usuarioDTO.getLogradouro());
+        usuario.setNumero(usuarioDTO.getNumero());
+        usuario.setComplemento(usuarioDTO.getComplemento());
+        usuario.setBairro(usuarioDTO.getBairro());
+        usuario.setCidade(usuarioDTO.getCidade());
+        usuario.setEstado(usuarioDTO.getEstado());
+        usuario.setCep(usuarioDTO.getCep());
         this.usuarioService.updateUsuario(usuario, id);
         var status = HttpStatus.NO_CONTENT;
         return ResponseEntity.status(status.value()).build();

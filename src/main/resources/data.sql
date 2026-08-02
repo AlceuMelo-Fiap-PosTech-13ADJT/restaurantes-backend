@@ -2,18 +2,18 @@
 
 CREATE TABLE usuarios (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
-    nome VARCHAR(255),
-    email VARCHAR(255) UNIQUE,
-    nome_de_usuario VARCHAR(255) UNIQUE,
-    senha VARCHAR(255),
-    logradouro VARCHAR(255),
-    numero VARCHAR(255),
+    nome VARCHAR(255) NOT NULL,
+    email VARCHAR(255) UNIQUE NOT NULL,
+    nome_de_usuario VARCHAR(255) UNIQUE NOT NULL,
+    senha VARCHAR(255) NOT NULL,
+    logradouro VARCHAR(255) NOT NULL,
+    numero VARCHAR(255) NOT NULL,
     complemento VARCHAR(255),
     bairro VARCHAR(255),
-    cidade VARCHAR(255),
-    estado VARCHAR(255),
-    cep VARCHAR(255),
-    perfis VARCHAR(255),
+    cidade VARCHAR(255) NOT NULL,
+    estado VARCHAR(255) NOT NULL,
+    cep VARCHAR(255) NOT NULL,
+    perfil VARCHAR(255) NOT NULL,
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     updated_at DATETIME DEFAULT CURRENT_TIMESTAMP
 );
@@ -30,7 +30,7 @@ INSERT INTO usuarios (
     cidade,
     estado,
     cep,
-    perfis
+    perfil
 ) VALUES (
     'Fulano de Tal',
     'fulano@detal.com',
@@ -43,7 +43,7 @@ INSERT INTO usuarios (
     'Pirapora do Norte',
     'PI',
     '12345-678',
-    '[usuario]'
+    'CLIENTE'
 );
 
 INSERT INTO usuarios (
@@ -58,7 +58,7 @@ INSERT INTO usuarios (
     cidade,
     estado,
     cep,
-    perfis
+    perfil
 ) VALUES (
     'Beltrano da Silva',
     'beltrano@dasilva.com',
@@ -71,6 +71,6 @@ INSERT INTO usuarios (
     'Santeiros',
     'RS',
     '54321-001',
-    '[proprietario,usuario]'
+    'PROPRIETARIO'
 );
 
