@@ -5,6 +5,7 @@ import br.com.fiap.fase1tc.restaurantes_backend.mappers.UsuarioMapper;
 import org.springframework.jdbc.core.simple.JdbcClient;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -66,7 +67,7 @@ public class UsuarioRepository implements IUsuarioRepository {
                 .sql("INSERT INTO usuarios (nome, email, nome_de_usuario, senha, logradouro, numero, complemento, " +
                         "bairro, cidade, estado, cep, perfil, created_at, updated_at) VALUES (:nome, :email, " +
                         ":nome_de_usuario, :senha, :logradouro, :numero, :complemento, :bairro, :cidade, :estado, " +
-                        ":cep, :perfil, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)")
+                        ":cep, :perfil, :created_at, :updated_at)")
                 .param("nome", usuario.getNome())
                 .param("email", usuario.getEmail())
                 .param("nome_de_usuario", usuario.getNome_de_usuario())
@@ -79,6 +80,8 @@ public class UsuarioRepository implements IUsuarioRepository {
                 .param("estado", usuario.getEstado())
                 .param("cep", usuario.getCep())
                 .param("perfil", usuario.getPerfil().name())
+                .param("created_at", LocalDateTime.now())
+                .param("updated_at", LocalDateTime.now())
                 .update();
     }
 
@@ -98,7 +101,7 @@ public class UsuarioRepository implements IUsuarioRepository {
                 .sql("UPDATE usuarios SET nome = :nome, email = :email, nome_de_usuario = :nome_de_usuario, " +
                         "senha = :senha, logradouro = :logradouro, numero = :numero, complemento = :complemento, " +
                         "bairro = :bairro, cidade = :cidade, estado = :estado, cep = :cep, perfil = :perfil, " +
-                        "updated_at = CURRENT_TIMESTAMP WHERE id = :id")
+                        "updated_at = :updated_at WHERE id = :id")
                 .param("nome", usuario.getNome())
                 .param("email", usuario.getEmail())
                 .param("nome_de_usuario", usuario.getNome_de_usuario())
@@ -111,6 +114,7 @@ public class UsuarioRepository implements IUsuarioRepository {
                 .param("estado", usuario.getEstado())
                 .param("cep", usuario.getCep())
                 .param("perfil", usuario.getPerfil().name())
+                .param("updated_at", LocalDateTime.now())
                 .param("id", id)
                 .update();
     }
