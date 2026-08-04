@@ -37,10 +37,10 @@ public class UsuarioRepository implements IUsuarioRepository {
     }
 
     @Override
-    public Optional<Usuario> findByNomeDeUsuario(String nomeDeUsuario) {
+    public Optional<Usuario> findByLogin(String login) {
         return this.jdbcClient
-                .sql("SELECT * FROM usuarios WHERE nome_de_usuario = :nome_de_usuario")
-                .param("nome_de_usuario", nomeDeUsuario)
+                .sql("SELECT * FROM usuarios WHERE login = :login")
+                .param("login", login)
                 .query(new UsuarioMapper())
                 .optional();
     }
@@ -60,17 +60,17 @@ public class UsuarioRepository implements IUsuarioRepository {
         if (this.findByEmail(usuario.getEmail()).isPresent()) {
             throw new IllegalArgumentException("email já existe");
         }
-        if (this.findByNomeDeUsuario(usuario.getNome_de_usuario()).isPresent()) {
+        if (this.findByLogin(usuario.getLogin()).isPresent()) {
             throw new IllegalArgumentException("nome de usuário já existe");
         }
         return this.jdbcClient
-                .sql("INSERT INTO usuarios (nome, email, nome_de_usuario, senha, logradouro, numero, complemento, " +
+                .sql("INSERT INTO usuarios (nome, email, login, senha, logradouro, numero, complemento, " +
                         "bairro, cidade, estado, cep, perfil, created_at, updated_at) VALUES (:nome, :email, " +
-                        ":nome_de_usuario, :senha, :logradouro, :numero, :complemento, :bairro, :cidade, :estado, " +
+                        ":login, :senha, :logradouro, :numero, :complemento, :bairro, :cidade, :estado, " +
                         ":cep, :perfil, :created_at, :updated_at)")
                 .param("nome", usuario.getNome())
                 .param("email", usuario.getEmail())
-                .param("nome_de_usuario", usuario.getNome_de_usuario())
+                .param("login", usuario.getLogin())
                 .param("senha", usuario.getSenha())
                 .param("logradouro", usuario.getLogradouro())
                 .param("numero", usuario.getNumero())
@@ -92,19 +92,19 @@ public class UsuarioRepository implements IUsuarioRepository {
                 !usuarioOptionalCheck.get().getId().equals(id)) {
             throw new IllegalArgumentException("email já existe");
         }
-        usuarioOptionalCheck = this.findByNomeDeUsuario(usuario.getNome_de_usuario());
+        usuarioOptionalCheck = this.findByLogin(usuario.getLogin());
         if (usuarioOptionalCheck.isPresent() &&
                 !usuarioOptionalCheck.get().getId().equals(id)) {
             throw new IllegalArgumentException("nome de usuário já existe");
         }
         return this.jdbcClient
-                .sql("UPDATE usuarios SET nome = :nome, email = :email, nome_de_usuario = :nome_de_usuario, " +
+                .sql("UPDATE usuarios SET nome = :nome, email = :email, login = :login, " +
                         "senha = :senha, logradouro = :logradouro, numero = :numero, complemento = :complemento, " +
                         "bairro = :bairro, cidade = :cidade, estado = :estado, cep = :cep, perfil = :perfil, " +
                         "updated_at = :updated_at WHERE id = :id")
                 .param("nome", usuario.getNome())
                 .param("email", usuario.getEmail())
-                .param("nome_de_usuario", usuario.getNome_de_usuario())
+                .param("login", usuario.getLogin())
                 .param("senha", usuario.getSenha())
                 .param("logradouro", usuario.getLogradouro())
                 .param("numero", usuario.getNumero())

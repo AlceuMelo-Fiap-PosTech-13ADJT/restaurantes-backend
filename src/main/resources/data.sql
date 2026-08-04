@@ -4,7 +4,7 @@ CREATE TABLE usuarios (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
     nome VARCHAR(255) NOT NULL,
     email VARCHAR(255) UNIQUE NOT NULL,
-    nome_de_usuario VARCHAR(255) UNIQUE NOT NULL,
+    login VARCHAR(255) UNIQUE NOT NULL,
     senha VARCHAR(255) NOT NULL,
     logradouro VARCHAR(255) NOT NULL,
     numero VARCHAR(255) NOT NULL,
@@ -21,7 +21,7 @@ CREATE TABLE usuarios (
 INSERT INTO usuarios (
     nome,
     email,
-    nome_de_usuario,
+    login,
     senha,
     logradouro,
     numero,
@@ -49,7 +49,7 @@ INSERT INTO usuarios (
 INSERT INTO usuarios (
     nome,
     email,
-    nome_de_usuario,
+    login,
     senha,
     logradouro,
     numero,

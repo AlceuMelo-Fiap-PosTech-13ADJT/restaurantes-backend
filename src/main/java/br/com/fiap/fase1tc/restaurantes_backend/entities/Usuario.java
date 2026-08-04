@@ -15,7 +15,7 @@ public abstract class Usuario {
     private Long id;
     private String nome;
     private String email;
-    private String nome_de_usuario;
+    private String login;
     private String senha;
     private String logradouro;
     private String numero;
@@ -25,8 +25,8 @@ public abstract class Usuario {
     private String estado;
     private String cep;
     private PerfilUsuario perfil;
-    private LocalDateTime created_at;
-    private LocalDateTime updated_at;
+    private LocalDateTime created_at; // data criação
+    private LocalDateTime updated_at; // data última alteração
 
     protected Usuario(PerfilUsuario perfil) {
         this.perfil = perfil;

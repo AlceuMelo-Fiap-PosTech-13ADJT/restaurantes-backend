@@ -54,11 +54,11 @@ public class UsuarioController {
     }
 
     @GetMapping("/nomedeusuario/{nomedeusuario}")
-    public ResponseEntity<Optional<Usuario>> findByNomeDeUsuario(
+    public ResponseEntity<Optional<Usuario>> findByLogin(
             @PathVariable("nomedeusuario") String nomedeusuario
     ) {
         logger.info("/usuarios/nomedeusuario/" + nomedeusuario);
-        var usuario = this.usuarioService.findUsuarioByNomeDeUsuario(nomedeusuario);
+        var usuario = this.usuarioService.findUsuarioByLogin(nomedeusuario);
         return ResponseEntity.ok(usuario);
     }
 
@@ -70,7 +70,7 @@ public class UsuarioController {
         Usuario usuario = UsuarioFactory.createUsuario(usuarioDTO.getPerfil());
         usuario.setNome(usuarioDTO.getNome());
         usuario.setEmail(usuarioDTO.getEmail());
-        usuario.setNome_de_usuario(usuarioDTO.getNome_de_usuario());
+        usuario.setLogin(usuarioDTO.getLogin());
         usuario.setSenha(usuarioDTO.getSenha());
         usuario.setLogradouro(usuarioDTO.getLogradouro());
         usuario.setNumero(usuarioDTO.getNumero());
@@ -93,7 +93,7 @@ public class UsuarioController {
         Usuario usuario = UsuarioFactory.createUsuario(usuarioDTO.getPerfil());
         usuario.setNome(usuarioDTO.getNome());
         usuario.setEmail(usuarioDTO.getEmail());
-        usuario.setNome_de_usuario(usuarioDTO.getNome_de_usuario());
+        usuario.setLogin(usuarioDTO.getLogin());
         usuario.setSenha(usuarioDTO.getSenha());
         usuario.setLogradouro(usuarioDTO.getLogradouro());
         usuario.setNumero(usuarioDTO.getNumero());

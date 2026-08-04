@@ -15,7 +15,7 @@ public class UsuarioRequestDTO {
     private Long id;
     private String nome;
     private String email;
-    private String nome_de_usuario;
+    private String login;
     private String senha;
     private String logradouro;
     private String numero;

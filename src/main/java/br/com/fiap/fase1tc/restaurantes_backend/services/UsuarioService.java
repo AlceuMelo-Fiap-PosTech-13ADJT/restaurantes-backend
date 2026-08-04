@@ -26,8 +26,8 @@ public class UsuarioService {
         return this.usuarioRepository.findById(id);
     }
 
-    public Optional<Usuario> findUsuarioByNomeDeUsuario(String nomeDeUsuario) {
-        return this.usuarioRepository.findByNomeDeUsuario(nomeDeUsuario);
+    public Optional<Usuario> findUsuarioByLogin(String login) {
+        return this.usuarioRepository.findByLogin(login);
     }
 
     public Optional<Usuario> findUsuarioByEmail(String email) {

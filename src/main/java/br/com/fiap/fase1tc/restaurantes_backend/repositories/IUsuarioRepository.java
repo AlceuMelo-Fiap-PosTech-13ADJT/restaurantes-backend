@@ -8,7 +8,7 @@ import java.util.Optional;
 public interface IUsuarioRepository {
     Optional<Usuario> findById(Long id);
     Optional<Usuario> findByEmail(String email);
-    Optional<Usuario> findByNomeDeUsuario(String nomeDeUsuario);
+    Optional<Usuario> findByLogin(String login);
     List<Usuario> findAll(int size, int page);
     Integer save(Usuario usuario);
     Integer update(Usuario usuario, Long id);
