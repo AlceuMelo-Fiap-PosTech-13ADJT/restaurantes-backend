@@ -56,6 +56,12 @@ public class UsuarioRepository implements IUsuarioRepository {
 
     @Override
     public Integer save(Usuario usuario) {
+        if (this.findByEmail(usuario.getEmail()).isPresent()) {
+            throw new IllegalArgumentException("email já existe");
+        }
+        if (this.findByNomeDeUsuario(usuario.getNome_de_usuario()).isPresent()) {
+            throw new IllegalArgumentException("nome de usuário já existe");
+        }
         return this.jdbcClient
                 .sql("INSERT INTO usuarios (nome, email, nome_de_usuario, senha, logradouro, numero, complemento, " +
                         "bairro, cidade, estado, cep, perfil, created_at, updated_at) VALUES (:nome, :email, " +
@@ -78,6 +84,16 @@ public class UsuarioRepository implements IUsuarioRepository {
 
     @Override
     public Integer update(Usuario usuario, Long id) {
+        Optional<Usuario> usuarioOptionalCheck = this.findByEmail(usuario.getEmail());
+        if (usuarioOptionalCheck.isPresent() &&
+                !usuarioOptionalCheck.get().getId().equals(id)) {
+            throw new IllegalArgumentException("email já existe");
+        }
+        usuarioOptionalCheck = this.findByNomeDeUsuario(usuario.getNome_de_usuario());
+        if (usuarioOptionalCheck.isPresent() &&
+                !usuarioOptionalCheck.get().getId().equals(id)) {
+            throw new IllegalArgumentException("nome de usuário já existe");
+        }
         return this.jdbcClient
                 .sql("UPDATE usuarios SET nome = :nome, email = :email, nome_de_usuario = :nome_de_usuario, " +
                         "senha = :senha, logradouro = :logradouro, numero = :numero, complemento = :complemento, " +
