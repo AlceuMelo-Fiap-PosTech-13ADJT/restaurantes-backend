@@ -99,13 +99,12 @@ public class UsuarioRepository implements IUsuarioRepository {
         }
         return this.jdbcClient
                 .sql("UPDATE usuarios SET nome = :nome, email = :email, login = :login, " +
-                        "senha = :senha, logradouro = :logradouro, numero = :numero, complemento = :complemento, " +
+                        "logradouro = :logradouro, numero = :numero, complemento = :complemento, " +
                         "bairro = :bairro, cidade = :cidade, estado = :estado, cep = :cep, perfil = :perfil, " +
                         "updated_at = :updated_at WHERE id = :id")
                 .param("nome", usuario.getNome())
                 .param("email", usuario.getEmail())
                 .param("login", usuario.getLogin())
-                .param("senha", usuario.getSenha())
                 .param("logradouro", usuario.getLogradouro())
                 .param("numero", usuario.getNumero())
                 .param("complemento", usuario.getComplemento())

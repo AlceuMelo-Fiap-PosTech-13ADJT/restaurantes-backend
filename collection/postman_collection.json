@@ -126,7 +126,7 @@
             "header": [],
             "body": {
               "mode": "raw",
-              "raw": "{\r\n    \"nome\": \"Antonio Ferreira\",\r\n    \"email\": \"antonio@ferreira.com\",\r\n    \"login\": \"aferreira\",\r\n    \"senha\": \"www777\",\r\n    \"logradouro\": \"Rua Fernando Pessoa\",\r\n    \"numero\": \"2654\",\r\n    \"complemento\": \"fundos\",\r\n    \"bairro\": \"Santa Cecília\",\r\n    \"cidade\": \"Atos Portos\",\r\n    \"estado\": \"SP\",\r\n    \"cep\": \"09875-111\",\r\n    \"perfil\": \"PROPRIETARIO\"\r\n}",
+              "raw": "{\r\n    \"nome\": \"Antonio Ferreira\",\r\n    \"email\": \"antonio@ferreira.com\",\r\n    \"login\": \"aferreira\",\r\n    \"logradouro\": \"Rua Fernando Pessoa\",\r\n    \"numero\": \"2654\",\r\n    \"complemento\": \"fundos\",\r\n    \"bairro\": \"Santa Cecília\",\r\n    \"cidade\": \"Atos Portos\",\r\n    \"estado\": \"SP\",\r\n    \"cep\": \"09875-111\",\r\n    \"perfil\": \"PROPRIETARIO\"\r\n}",
               "options": {
                 "raw": {
                   "language": "json"
