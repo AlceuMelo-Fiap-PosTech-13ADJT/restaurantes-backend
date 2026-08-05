@@ -1,5 +1,6 @@
 package br.com.fiap.fase1tc.restaurantes_backend.repositories;
 
+import br.com.fiap.fase1tc.restaurantes_backend.dtos.UsuarioPasswordRequestDTO;
 import br.com.fiap.fase1tc.restaurantes_backend.entities.Usuario;
 import br.com.fiap.fase1tc.restaurantes_backend.mappers.UsuarioMapper;
 import org.springframework.jdbc.core.simple.JdbcClient;
@@ -16,15 +17,6 @@ public class UsuarioRepository implements IUsuarioRepository {
 
     public UsuarioRepository(JdbcClient jdbcClient) {
         this.jdbcClient = jdbcClient;
-    }
-
-    @Override
-    public Optional<Usuario> findById(Long id) {
-        return this.jdbcClient
-                .sql("SELECT * FROM usuarios WHERE id = :id")
-                .param("id", id)
-                .query(new UsuarioMapper())
-                .optional();
     }
 
     @Override
@@ -46,23 +38,16 @@ public class UsuarioRepository implements IUsuarioRepository {
     }
 
     @Override
-    public List<Usuario> findAll(int size, int offset) {
+    public List<Usuario> findAllByNome(String nome) {
         return this.jdbcClient
-                .sql("SELECT * FROM usuarios LIMIT :size OFFSET :offset")
-                .param("size", size)
-                .param("offset", offset)
+                .sql("SELECT * FROM usuarios WHERE UPPER(nome) LIKE :nome")
+                .param("nome", "%" + nome.toUpperCase() + "%")
                 .query(new UsuarioMapper())
                 .list();
     }
 
     @Override
     public Integer save(Usuario usuario) {
-        if (this.findByEmail(usuario.getEmail()).isPresent()) {
-            throw new IllegalArgumentException("email já existe");
-        }
-        if (this.findByLogin(usuario.getLogin()).isPresent()) {
-            throw new IllegalArgumentException("login já existe");
-        }
         return this.jdbcClient
                 .sql("INSERT INTO usuarios (nome, email, login, senha, logradouro, numero, complemento, " +
                         "bairro, cidade, estado, cep, perfil, created_at, updated_at) VALUES (:nome, :email, " +
@@ -86,17 +71,16 @@ public class UsuarioRepository implements IUsuarioRepository {
     }
 
     @Override
+    public Integer updatePassword(String senha, Long id) {
+        return this.jdbcClient
+                .sql("UPDATE usuarios SET senha = :senha WHERE id = :id")
+                .param("senha", senha)
+                .param("id", id)
+                .update();
+    }
+
+    @Override
     public Integer update(Usuario usuario, Long id) {
-        Optional<Usuario> usuarioOptionalCheck = this.findByEmail(usuario.getEmail());
-        if (usuarioOptionalCheck.isPresent() &&
-                !usuarioOptionalCheck.get().getId().equals(id)) {
-            throw new IllegalArgumentException("email já existe");
-        }
-        usuarioOptionalCheck = this.findByLogin(usuario.getLogin());
-        if (usuarioOptionalCheck.isPresent() &&
-                !usuarioOptionalCheck.get().getId().equals(id)) {
-            throw new IllegalArgumentException("login já existe");
-        }
         return this.jdbcClient
                 .sql("UPDATE usuarios SET nome = :nome, email = :email, login = :login, " +
                         "logradouro = :logradouro, numero = :numero, complemento = :complemento, " +

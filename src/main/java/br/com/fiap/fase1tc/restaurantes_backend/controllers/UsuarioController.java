@@ -1,8 +1,8 @@
 package br.com.fiap.fase1tc.restaurantes_backend.controllers;
 
+import br.com.fiap.fase1tc.restaurantes_backend.dtos.UsuarioPasswordRequestDTO;
 import br.com.fiap.fase1tc.restaurantes_backend.dtos.UsuarioRequestDTO;
 import br.com.fiap.fase1tc.restaurantes_backend.entities.Usuario;
-import br.com.fiap.fase1tc.restaurantes_backend.factories.UsuarioFactory;
 import br.com.fiap.fase1tc.restaurantes_backend.services.UsuarioService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,10 +11,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
-@RequestMapping("/usuarios")
+@RequestMapping("/v1/usuario")
 public class UsuarioController {
 
     private static final Logger logger = LoggerFactory.getLogger(UsuarioController.class);
@@ -26,93 +25,52 @@ public class UsuarioController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Usuario>> findAllUsuarios(
-            @RequestParam("page") int page,
-            @RequestParam("size") int size
+    public ResponseEntity<List<Usuario>> findAllByNome(
+            @RequestParam("nome") String nome
     ) {
-        logger.info("... acessando o endpoint de usuários /usuarios...");
-        var usuarios = this.usuarioService.findAllUsuarios(page, size);
+        logger.info("GET -> /v1/usuario?nome=" + nome);
+        var usuarios = this.usuarioService.findAllByNome(nome);
         return ResponseEntity.ok(usuarios);
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<Optional<Usuario>> findUsuarioById(
-            @PathVariable("id") long id
-    ) {
-        logger.info("/usuarios/" + id);
-        var usuario = this.usuarioService.findUsuarioById(id);
-        return ResponseEntity.ok(usuario);
-    }
-
-    @GetMapping("/email/{email}")
-    public ResponseEntity<Optional<Usuario>> findByEmail(
-            @PathVariable("email") String email
-    ) {
-        logger.info("/usuarios/email/" + email);
-        var usuario = this.usuarioService.findUsuarioByEmail(email);
-        return ResponseEntity.ok(usuario);
-    }
-
-    @GetMapping("/login/{login}")
-    public ResponseEntity<Optional<Usuario>> findByLogin(
-            @PathVariable("login") String login
-    ) {
-        logger.info("/usuarios/login/" + login);
-        var usuario = this.usuarioService.findUsuarioByLogin(login);
-        return ResponseEntity.ok(usuario);
-    }
-
     @PostMapping
-    public ResponseEntity<Void> saveUsuario(
+    public ResponseEntity<Void> save(
             @RequestBody UsuarioRequestDTO usuarioDTO
     ) {
-        logger.info("POST -> /usuarios");
-        Usuario usuario = UsuarioFactory.createUsuario(usuarioDTO.getPerfil());
-        usuario.setNome(usuarioDTO.getNome());
-        usuario.setEmail(usuarioDTO.getEmail());
-        usuario.setLogin(usuarioDTO.getLogin());
-        usuario.setSenha(usuarioDTO.getSenha());
-        usuario.setLogradouro(usuarioDTO.getLogradouro());
-        usuario.setNumero(usuarioDTO.getNumero());
-        usuario.setComplemento(usuarioDTO.getComplemento());
-        usuario.setBairro(usuarioDTO.getBairro());
-        usuario.setCidade(usuarioDTO.getCidade());
-        usuario.setEstado(usuarioDTO.getEstado());
-        usuario.setCep(usuarioDTO.getCep());
-        this.usuarioService.saveUsuario(usuario);
+        logger.info("POST -> /v1/usuario");
+        this.usuarioService.save(usuarioDTO);
         var status = HttpStatus.CREATED;
         return ResponseEntity.status(status.value()).build();
     }
 
+    @PutMapping("/{id}/password")
+    public ResponseEntity<Void> updatePassword(
+            @PathVariable("id") Long id,
+            @RequestBody UsuarioPasswordRequestDTO usuarioPasswordDTO
+    ) {
+        logger.info("POST -> /v1/usuario/" + id + "/password");
+        this.usuarioService.updatePassword(usuarioPasswordDTO, id);
+        var status = HttpStatus.NO_CONTENT;
+        return ResponseEntity.status(status.value()).build();
+    }
+
     @PutMapping("/{id}")
-    public ResponseEntity<Void> updateUsuario(
+    public ResponseEntity<Void> update(
             @PathVariable("id") Long id,
             @RequestBody  UsuarioRequestDTO usuarioDTO
     ) {
-        logger.info("PUT -> /usuarios/" + id);
-        Usuario usuario = UsuarioFactory.createUsuario(usuarioDTO.getPerfil());
-        usuario.setNome(usuarioDTO.getNome());
-        usuario.setEmail(usuarioDTO.getEmail());
-        usuario.setLogin(usuarioDTO.getLogin());
-        usuario.setSenha(usuarioDTO.getSenha());
-        usuario.setLogradouro(usuarioDTO.getLogradouro());
-        usuario.setNumero(usuarioDTO.getNumero());
-        usuario.setComplemento(usuarioDTO.getComplemento());
-        usuario.setBairro(usuarioDTO.getBairro());
-        usuario.setCidade(usuarioDTO.getCidade());
-        usuario.setEstado(usuarioDTO.getEstado());
-        usuario.setCep(usuarioDTO.getCep());
-        this.usuarioService.updateUsuario(usuario, id);
+        logger.info("PUT -> /v1/usuario/" + id);
+        this.usuarioService.update(usuarioDTO, id);
         var status = HttpStatus.NO_CONTENT;
         return ResponseEntity.status(status.value()).build();
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteUsuario(
+    public ResponseEntity<Void> delete(
             @PathVariable("id") Long id
     ) {
-        logger.info("DELETE -> /usuarios/" + id);
-        this.usuarioService.deleteUsuario(id);
+        logger.info("DELETE -> /v1/usuario/" + id);
+        this.usuarioService.delete(id);
         return ResponseEntity.ok().build();
     }
 }
