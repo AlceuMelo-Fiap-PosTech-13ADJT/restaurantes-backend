@@ -53,12 +53,12 @@ public class UsuarioController {
         return ResponseEntity.ok(usuario);
     }
 
-    @GetMapping("/nomedeusuario/{nomedeusuario}")
+    @GetMapping("/login/{login}")
     public ResponseEntity<Optional<Usuario>> findByLogin(
-            @PathVariable("nomedeusuario") String nomedeusuario
+            @PathVariable("login") String login
     ) {
-        logger.info("/usuarios/nomedeusuario/" + nomedeusuario);
-        var usuario = this.usuarioService.findUsuarioByLogin(nomedeusuario);
+        logger.info("/usuarios/login/" + login);
+        var usuario = this.usuarioService.findUsuarioByLogin(login);
         return ResponseEntity.ok(usuario);
     }
 

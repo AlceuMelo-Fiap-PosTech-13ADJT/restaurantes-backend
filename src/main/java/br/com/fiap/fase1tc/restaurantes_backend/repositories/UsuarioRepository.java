@@ -61,7 +61,7 @@ public class UsuarioRepository implements IUsuarioRepository {
             throw new IllegalArgumentException("email já existe");
         }
         if (this.findByLogin(usuario.getLogin()).isPresent()) {
-            throw new IllegalArgumentException("nome de usuário já existe");
+            throw new IllegalArgumentException("login já existe");
         }
         return this.jdbcClient
                 .sql("INSERT INTO usuarios (nome, email, login, senha, logradouro, numero, complemento, " +
@@ -95,7 +95,7 @@ public class UsuarioRepository implements IUsuarioRepository {
         usuarioOptionalCheck = this.findByLogin(usuario.getLogin());
         if (usuarioOptionalCheck.isPresent() &&
                 !usuarioOptionalCheck.get().getId().equals(id)) {
-            throw new IllegalArgumentException("nome de usuário já existe");
+            throw new IllegalArgumentException("login já existe");
         }
         return this.jdbcClient
                 .sql("UPDATE usuarios SET nome = :nome, email = :email, login = :login, " +

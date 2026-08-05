@@ -75,18 +75,18 @@
           "response": []
         },
         {
-          "name": "GET usuario by nomedeusuario",
+          "name": "GET usuario by login",
           "request": {
             "method": "GET",
             "header": [],
             "url": {
-              "raw": "{{LOCAL_HOST}}/usuarios/nomedeusuario/bsilva",
+              "raw": "{{LOCAL_HOST}}/usuarios/login/bsilva",
               "host": [
                 "{{LOCAL_HOST}}"
               ],
               "path": [
                 "usuarios",
-                "nomedeusuario",
+                "login",
                 "bsilva"
               ]
             }
