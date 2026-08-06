@@ -16,7 +16,7 @@
             "method": "GET",
             "header": [],
             "url": {
-              "raw": "{{LOCAL_HOST}}/v1/usuario?nome=silva",
+              "raw": "{{LOCAL_HOST}}/v1/usuario?nome=antonio",
               "host": [
                 "{{LOCAL_HOST}}"
               ],
@@ -27,7 +27,7 @@
               "query": [
                 {
                   "key": "nome",
-                  "value": "silva"
+                  "value": "antonio"
                 }
               ]
             }
@@ -132,6 +132,38 @@
                 "v1",
                 "usuario",
                 "2"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "/v1/login",
+      "item": [
+        {
+          "name": "POST login",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"login\": \"aferreira\",\r\n    \"senha\": \"0123abcd\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{LOCAL_HOST}}/v1/login",
+              "host": [
+                "{{LOCAL_HOST}}"
+              ],
+              "path": [
+                "v1",
+                "login"
               ]
             }
           },
