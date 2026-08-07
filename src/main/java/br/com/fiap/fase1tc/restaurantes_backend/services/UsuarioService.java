@@ -5,6 +5,10 @@ import br.com.fiap.fase1tc.restaurantes_backend.dtos.UsuarioRequestDTO;
 import br.com.fiap.fase1tc.restaurantes_backend.entities.Usuario;
 import br.com.fiap.fase1tc.restaurantes_backend.factories.UsuarioFactory;
 import br.com.fiap.fase1tc.restaurantes_backend.repositories.UsuarioRepository;
+import br.com.fiap.fase1tc.restaurantes_backend.services.exceptions.EmailJaCadastradoException;
+import br.com.fiap.fase1tc.restaurantes_backend.services.exceptions.LoginJaCadastradoException;
+import br.com.fiap.fase1tc.restaurantes_backend.services.exceptions.SenhaEConfirmacaoDiferentesException;
+import br.com.fiap.fase1tc.restaurantes_backend.services.exceptions.FalhaEmManipularUsuarioException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
@@ -29,13 +33,13 @@ public class UsuarioService {
 
     public void save(UsuarioRequestDTO usuarioDTO) {
         if (!usuarioDTO.senha().equals(usuarioDTO.confirmacaoSenha())) {
-            throw new RuntimeException("a senha e a confirmação da senha devem ser iguais");
+            throw new SenhaEConfirmacaoDiferentesException();
         }
         if (this.usuarioRepository.findByEmail(usuarioDTO.email()).isPresent()) {
-            throw new RuntimeException("email já existe");
+            throw new EmailJaCadastradoException(usuarioDTO.email());
         }
         if (this.usuarioRepository.findByLogin(usuarioDTO.login()).isPresent()) {
-            throw new RuntimeException("login já existe");
+            throw new LoginJaCadastradoException(usuarioDTO.login());
         }
         Usuario usuario = UsuarioFactory.createUsuario(usuarioDTO.perfil());
         usuario.setNome(usuarioDTO.nome());
@@ -50,17 +54,19 @@ public class UsuarioService {
         usuario.setEstado(usuarioDTO.estado());
         usuario.setCep(usuarioDTO.cep());
         var save = this.usuarioRepository.save(usuario);
-        Assert.state(save == 1, "Erro ao salvar usuário " +  usuario.getNome());
+        if (save == 0) {
+            throw new FalhaEmManipularUsuarioException("Erro ao salvar usuário " +  usuario.getNome() + ".");
+        }
     }
 
     public void updatePassword(UsuarioPasswordRequestDTO usuarioPasswordDTO, Long id) {
         if (!usuarioPasswordDTO.senha().equals(usuarioPasswordDTO.confirmacaoSenha())) {
-            throw new RuntimeException("A senha e a confirmação da senha devem ser iguais");
+            throw new SenhaEConfirmacaoDiferentesException();
         }
         String senhaCriptografada = passwordEncoder.encode(usuarioPasswordDTO.senha());
         var updatePassword = this.usuarioRepository.updatePassword(senhaCriptografada, id);
         if (updatePassword == 0) {
-            throw new RuntimeException("Falha ao atualizar a senha");
+            throw new FalhaEmManipularUsuarioException("Falha ao atualizar a senha do usuário id " + id + ".");
         }
     }
 
@@ -68,12 +74,12 @@ public class UsuarioService {
         Optional<Usuario> usuarioOptionalCheck = this.usuarioRepository.findByEmail(usuarioDTO.email());
         if (usuarioOptionalCheck.isPresent() &&
                 !usuarioOptionalCheck.get().getId().equals(id)) {
-            throw new RuntimeException("email já existe");
+            throw new EmailJaCadastradoException(usuarioDTO.email());
         }
         usuarioOptionalCheck = this.usuarioRepository.findByLogin(usuarioDTO.login());
         if (usuarioOptionalCheck.isPresent() &&
                 !usuarioOptionalCheck.get().getId().equals(id)) {
-            throw new RuntimeException("login já existe");
+            throw new LoginJaCadastradoException(usuarioDTO.login());
         }
         Usuario usuario = UsuarioFactory.createUsuario(usuarioDTO.perfil());
         usuario.setNome(usuarioDTO.nome());
@@ -88,14 +94,14 @@ public class UsuarioService {
         usuario.setCep(usuarioDTO.cep());
         var update = this.usuarioRepository.update(usuario, id);
         if (update == 0) {
-            throw new RuntimeException("Usuario não encontrado");
+            throw new FalhaEmManipularUsuarioException("Falha em atualizar o usuário id " + id + ".");
         }
     }
 
     public void delete(Long id) {
         var delete = this.usuarioRepository.delete(id);
         if (delete == 0) {
-            throw new RuntimeException("Usuário não encontrado");
+            throw new FalhaEmManipularUsuarioException("Falha em excluir o usuário id " + id + ".");
         }
     }
 
