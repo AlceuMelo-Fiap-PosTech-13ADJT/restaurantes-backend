@@ -1,0 +1,367 @@
+openapi: 3.1.0
+info:
+  title: Restaurantes API
+  description: "API para gerenciamento de restaurantes, usuários e autenticação."
+  version: 1.0.0
+servers:
+- url: http://localhost:8080
+  description: Generated server url
+tags:
+- name: Gestão de Usuários
+  description: Endpoints para operações de perfil e usuários
+- name: Autenticação
+  description: Endpoints para autenticação de usuários
+paths:
+  /api/v1/usuarios/{id}:
+    put:
+      tags:
+      - Gestão de Usuários
+      summary: Atualizar dados do usuário
+      description: Atualiza as informações cadastrais de um usuário existente.
+      operationId: update
+      parameters:
+      - name: id
+        in: path
+        description: ID do usuário
+        required: true
+        schema:
+          type: integer
+          format: int64
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UsuarioRequestDTO"
+        required: true
+      responses:
+        "204":
+          description: Usuário atualizado com sucesso
+        "409":
+          description: Conflito ao atualizar dados
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetail"
+              example:
+                title: Conflict
+                status: 409
+                detail: Dados de validação falharam ou duplicidade
+    delete:
+      tags:
+      - Gestão de Usuários
+      summary: Excluir usuário
+      description: Remove um usuário do sistema permanentemente.
+      operationId: delete
+      parameters:
+      - name: id
+        in: path
+        description: ID do usuário
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "204":
+          description: Usuário removido com sucesso
+        "404":
+          description: Usuário não encontrado
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetail"
+              example:
+                title: Not Found
+                status: 404
+                detail: Usuário com ID não encontrado
+  /api/v1/usuarios/{id}/password:
+    put:
+      tags:
+      - Gestão de Usuários
+      summary: Atualizar senha
+      description: Altera a senha de um usuário específico.
+      operationId: updatePassword
+      parameters:
+      - name: id
+        in: path
+        description: ID do usuário
+        required: true
+        schema:
+          type: integer
+          format: int64
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UsuarioPasswordRequestDTO"
+        required: true
+      responses:
+        "204":
+          description: Senha atualizada com sucesso
+        "400":
+          description: Dados inválidos ou falha na atualização
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetail"
+              example:
+                title: Bad Request
+                status: 400
+                detail: As senhas não conferem
+  /api/v1/usuarios:
+    get:
+      tags:
+      - Gestão de Usuários
+      summary: Listar usuários por nome
+      description: Retorna uma lista de usuários filtrada pelo nome informado.
+      operationId: findAllByNome
+      parameters:
+      - name: nome
+        in: query
+        description: Nome parcial para filtragem
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: Lista de usuários retornada com sucesso
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Usuario"
+        "400":
+          description: Parâmetro de busca inválido
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetail"
+              example:
+                title: Bad Request
+                status: 400
+                detail: O parâmetro 'nome' é obrigatório
+    post:
+      tags:
+      - Gestão de Usuários
+      summary: Cadastrar novo usuário
+      description: Realiza a inserção de um novo usuário no banco de dados.
+      operationId: save
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UsuarioRequestDTO"
+        required: true
+      responses:
+        "201":
+          description: Usuário criado com sucesso
+        "409":
+          description: E-mail ou login já cadastrado
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetail"
+              example:
+                title: Conflict
+                status: 409
+                detail: O e-mail e/ou login informado já está em uso
+  /api/v1/auth/login:
+    post:
+      tags:
+      - Autenticação
+      summary: Valida login e senha
+      description: Recebe as credenciais do usuário e retorna status de sucesso ou
+        erro de autenticação.
+      operationId: validaCredenciais
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AuthLoginRequestDTO"
+        required: true
+      responses:
+        "200":
+          description: Login realizado com sucesso
+          content:
+            '*/*':
+              schema:
+                type: object
+        "401":
+          description: Usuário ou senha incorretos
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetail"
+              example:
+                type: about:blank
+                title: Unauthorized
+                status: 401
+                detail: Usuário ou senha incorretos
+                instance: /api/v1/auth/login
+        "400":
+          description: Dados de requisição inválidos
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetail"
+              example:
+                type: about:blank
+                title: Bad Request
+                status: 400
+                detail: Campos obrigatórios ausentes
+                instance: /api/v1/auth/login
+components:
+  schemas:
+    ProblemDetail:
+      type: object
+      properties:
+        type:
+          type: string
+          format: uri
+        title:
+          type: string
+        status:
+          type: integer
+          format: int32
+        detail:
+          type: string
+        instance:
+          type: string
+          format: uri
+        properties:
+          type: object
+          additionalProperties: {}
+    UsuarioRequestDTO:
+      type: object
+      description: Dados para cadastro ou atualização de usuário
+      properties:
+        nome:
+          type: string
+          description: Nome completo
+          example: João Silva
+        email:
+          type: string
+          description: E-mail único
+          example: joao@email.com
+        login:
+          type: string
+          description: Nome de login
+          example: joaosilva
+        senha:
+          type: string
+          description: Senha do usuário
+          example: SenhaForte123!
+        confirmacaoSenha:
+          type: string
+          description: Confirmação da senha
+          example: SenhaForte123!
+        logradouro:
+          type: string
+          description: Logradouro
+          example: Rua Principal
+        numero:
+          type: string
+          description: Número
+          example: "100"
+        complemento:
+          type: string
+          description: Complemento
+          example: Apto 12
+        bairro:
+          type: string
+          description: Bairro
+          example: Centro
+        cidade:
+          type: string
+          description: Cidade
+          example: São Paulo
+        estado:
+          type: string
+          description: Estado (UF)
+          example: SP
+        cep:
+          type: string
+          description: CEP
+          example: 01001-000
+        perfil:
+          type: string
+          description: Perfil do usuário
+          enum:
+          - CLIENTE
+          - PROPRIETARIO
+          example: CLIENTE
+      required:
+      - confirmacaoSenha
+      - email
+      - login
+      - nome
+      - senha
+    UsuarioPasswordRequestDTO:
+      type: object
+      description: Dados para alteração de senha
+      properties:
+        senha:
+          type: string
+          description: Senha nova
+          example: NovaSenha123!
+        confirmacaoSenha:
+          type: string
+          description: Confirmação da nova senha
+          example: NovaSenha123!
+      required:
+      - confirmacaoSenha
+      - senha
+    AuthLoginRequestDTO:
+      type: object
+      description: Credenciais para autenticação
+      properties:
+        login:
+          type: string
+          description: Login do usuário
+          example: usuario_exemplo
+        senha:
+          type: string
+          description: Senha do usuário
+          example: senha123
+      required:
+      - login
+      - senha
+    Usuario:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        nome:
+          type: string
+        email:
+          type: string
+        login:
+          type: string
+        senha:
+          type: string
+        logradouro:
+          type: string
+        numero:
+          type: string
+        complemento:
+          type: string
+        bairro:
+          type: string
+        cidade:
+          type: string
+        estado:
+          type: string
+        cep:
+          type: string
+        perfil:
+          type: string
+          enum:
+          - PROPRIETARIO
+          - CLIENTE
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time

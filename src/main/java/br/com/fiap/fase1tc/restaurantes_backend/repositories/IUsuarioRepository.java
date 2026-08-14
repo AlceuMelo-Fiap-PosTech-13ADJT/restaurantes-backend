@@ -1,6 +1,5 @@
 package br.com.fiap.fase1tc.restaurantes_backend.repositories;
 
-import br.com.fiap.fase1tc.restaurantes_backend.dtos.UsuarioPasswordRequestDTO;
 import br.com.fiap.fase1tc.restaurantes_backend.entities.Usuario;
 
 import java.util.List;

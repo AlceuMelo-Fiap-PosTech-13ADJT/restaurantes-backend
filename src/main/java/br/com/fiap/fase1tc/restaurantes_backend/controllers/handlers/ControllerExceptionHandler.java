@@ -1,9 +1,6 @@
 package br.com.fiap.fase1tc.restaurantes_backend.controllers.handlers;
 
-import br.com.fiap.fase1tc.restaurantes_backend.services.exceptions.EmailJaCadastradoException;
-import br.com.fiap.fase1tc.restaurantes_backend.services.exceptions.FalhaEmManipularUsuarioException;
-import br.com.fiap.fase1tc.restaurantes_backend.services.exceptions.LoginJaCadastradoException;
-import br.com.fiap.fase1tc.restaurantes_backend.services.exceptions.SenhaEConfirmacaoDiferentesException;
+import br.com.fiap.fase1tc.restaurantes_backend.services.exceptions.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ProblemDetail;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -53,6 +50,17 @@ public class ControllerExceptionHandler {
         );
         problemDetail.setTitle("Falha em manipular usuário");
         problemDetail.setType(java.net.URI.create("https://backend.restaurantes.fiap/errors/falha-em-manipular-usuario"));
+        return problemDetail;
+    }
+
+    @ExceptionHandler(EntidadeNaoEncontradaException.class)
+    public ProblemDetail handleEntidadeNaoEncontradaException(EntidadeNaoEncontradaException ex) {
+        ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(
+                HttpStatus.NOT_FOUND,
+                ex.getMessage()
+        );
+        problemDetail.setTitle("Recurso não encontrado");
+        problemDetail.setType(java.net.URI.create("https://backend.restaurantes.fiap/errors/not-found"));
         return problemDetail;
     }
 

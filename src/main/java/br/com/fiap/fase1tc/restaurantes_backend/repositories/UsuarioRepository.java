@@ -1,6 +1,5 @@
 package br.com.fiap.fase1tc.restaurantes_backend.repositories;
 
-import br.com.fiap.fase1tc.restaurantes_backend.dtos.UsuarioPasswordRequestDTO;
 import br.com.fiap.fase1tc.restaurantes_backend.entities.Usuario;
 import br.com.fiap.fase1tc.restaurantes_backend.mappers.UsuarioMapper;
 import org.springframework.jdbc.core.simple.JdbcClient;

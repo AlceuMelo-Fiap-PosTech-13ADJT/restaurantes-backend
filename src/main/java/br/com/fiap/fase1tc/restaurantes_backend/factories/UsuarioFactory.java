@@ -1,9 +1,9 @@
 package br.com.fiap.fase1tc.restaurantes_backend.factories;
 
 import br.com.fiap.fase1tc.restaurantes_backend.entities.Cliente;
-import br.com.fiap.fase1tc.restaurantes_backend.entities.enums.PerfilUsuario;
 import br.com.fiap.fase1tc.restaurantes_backend.entities.Proprietario;
 import br.com.fiap.fase1tc.restaurantes_backend.entities.Usuario;
+import br.com.fiap.fase1tc.restaurantes_backend.entities.enums.PerfilUsuario;
 
 public class UsuarioFactory {
     public static Usuario createUsuario(PerfilUsuario perfil) {

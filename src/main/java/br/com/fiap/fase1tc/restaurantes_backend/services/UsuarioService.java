@@ -6,12 +6,11 @@ import br.com.fiap.fase1tc.restaurantes_backend.entities.Usuario;
 import br.com.fiap.fase1tc.restaurantes_backend.factories.UsuarioFactory;
 import br.com.fiap.fase1tc.restaurantes_backend.repositories.UsuarioRepository;
 import br.com.fiap.fase1tc.restaurantes_backend.services.exceptions.EmailJaCadastradoException;
+import br.com.fiap.fase1tc.restaurantes_backend.services.exceptions.FalhaEmManipularUsuarioException;
 import br.com.fiap.fase1tc.restaurantes_backend.services.exceptions.LoginJaCadastradoException;
 import br.com.fiap.fase1tc.restaurantes_backend.services.exceptions.SenhaEConfirmacaoDiferentesException;
-import br.com.fiap.fase1tc.restaurantes_backend.services.exceptions.FalhaEmManipularUsuarioException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.util.Assert;
 
 import java.util.List;
 import java.util.Optional;
@@ -60,6 +59,10 @@ public class UsuarioService {
     }
 
     public void updatePassword(UsuarioPasswordRequestDTO usuarioPasswordDTO, Long id) {
+        if (usuarioPasswordDTO.senha() == null ||
+            usuarioPasswordDTO.confirmacaoSenha() == null) {
+            throw new FalhaEmManipularUsuarioException("Dados informados inconsistentes.");
+        }
         if (!usuarioPasswordDTO.senha().equals(usuarioPasswordDTO.confirmacaoSenha())) {
             throw new SenhaEConfirmacaoDiferentesException();
         }
