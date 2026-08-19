@@ -4,6 +4,7 @@ import br.com.fiap.fase1tc.restaurantes_backend.dtos.UsuarioPasswordRequestDTO;
 import br.com.fiap.fase1tc.restaurantes_backend.dtos.UsuarioRequestDTO;
 import br.com.fiap.fase1tc.restaurantes_backend.entities.Usuario;
 import br.com.fiap.fase1tc.restaurantes_backend.factories.UsuarioFactory;
+import br.com.fiap.fase1tc.restaurantes_backend.repositories.IUsuarioRepository;
 import br.com.fiap.fase1tc.restaurantes_backend.repositories.UsuarioRepository;
 import br.com.fiap.fase1tc.restaurantes_backend.services.exceptions.EmailJaCadastradoException;
 import br.com.fiap.fase1tc.restaurantes_backend.services.exceptions.FalhaEmManipularUsuarioException;
@@ -18,10 +19,10 @@ import java.util.Optional;
 @Service
 public class UsuarioService {
 
-    private final UsuarioRepository usuarioRepository;
+    private final IUsuarioRepository usuarioRepository;
     private final BCryptPasswordEncoder passwordEncoder;
 
-    public UsuarioService(UsuarioRepository usuarioRepository, BCryptPasswordEncoder passwordEncoder) {
+    public UsuarioService(IUsuarioRepository usuarioRepository, BCryptPasswordEncoder passwordEncoder) {
         this.usuarioRepository = usuarioRepository;
         this.passwordEncoder = passwordEncoder;
     }
