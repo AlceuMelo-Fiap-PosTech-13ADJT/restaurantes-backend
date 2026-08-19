@@ -2,7 +2,7 @@
 FROM maven:3.9-eclipse-temurin-21 AS builder
 WORKDIR /app
 
-# Cache de dependências (Dockerfile1)
+# Cache de dependências
 COPY pom.xml .
 RUN mvn dependency:go-offline -B
 
@@ -20,13 +20,13 @@ RUN ./mvnw clean package -DskipTests -B || \
 FROM eclipse-temurin:21-jre-alpine
 WORKDIR /app
 
-# Segurança: user não-root (Dockerfile1)
+# Segurança: user não-root
 RUN adduser -D -u 1000 appuser && \
     chown -R appuser:appuser /app
 
 USER appuser
 
-# MySQL client para connector nativo (Dockerfile1)
+# MySQL client para connector nativo
 RUN apk add --no-cache mysql-connector-java && \
     rm -rf /var/cache/apk/*
 
@@ -35,7 +35,7 @@ COPY --from=builder /app/target/*.jar app.jar
 
 EXPOSE 8080
 
-# Health check robusto (Dockerfile1)
+# Health check robusto
 HEALTHCHECK --interval=30s --timeout=3s --start-period=60s --retries=3 \
     CMD curl -f http://localhost:8080/actuator/health || exit 1
 
