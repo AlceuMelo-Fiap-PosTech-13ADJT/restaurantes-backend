@@ -1,7 +1,12 @@
+# Environment files
+.env
+.env.local
+
 # Compiled class file
 *.class
 
-# Log file
+# Logs e secrets
+logs/
 *.log
 
 # BlueJ files
@@ -26,6 +31,9 @@ replay_pid*
 ## Spring Initialzr
 HELP.md
 target/
+!.mvn/
+mvnw
+mvnw.cmd
 .mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
 !**/src/test/**/target/
