@@ -1,24 +1,6 @@
 -- SQL inicial para ambiente dev
 
-CREATE TABLE usuarios (
-    id BIGINT AUTO_INCREMENT PRIMARY KEY,
-    nome VARCHAR(255) NOT NULL,
-    email VARCHAR(255) UNIQUE NOT NULL,
-    login VARCHAR(255) UNIQUE NOT NULL,
-    senha VARCHAR(255) NOT NULL,
-    logradouro VARCHAR(255) NOT NULL,
-    numero VARCHAR(255) NOT NULL,
-    complemento VARCHAR(255),
-    bairro VARCHAR(255),
-    cidade VARCHAR(255) NOT NULL,
-    estado VARCHAR(255) NOT NULL,
-    cep VARCHAR(255) NOT NULL,
-    perfil VARCHAR(255) NOT NULL,
-    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP
-);
-
-INSERT INTO usuarios (
+INSERT IGNORE INTO usuarios (
     nome,
     email,
     login,
@@ -46,7 +28,7 @@ INSERT INTO usuarios (
     'CLIENTE'
 );
 
-INSERT INTO usuarios (
+INSERT IGNORE INTO usuarios (
     nome,
     email,
     login,
