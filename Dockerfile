@@ -20,18 +20,17 @@ RUN ./mvnw clean package -DskipTests -B || \
 FROM eclipse-temurin:21-jre-alpine
 WORKDIR /app
 
-# Segurança: user não-root
-RUN adduser -D -u 1000 appuser && \
-    chown -R appuser:appuser /app
+# Instalação de dependências necessárias como root
+RUN apk add --no-cache curl && \
+    adduser -D -u 1000 appuser
+
+# Segurança: Configura permissões e usuário
+RUN chown appuser:appuser /app
+
+# Copia JAR do builder com permissão de proprietário
+COPY --from=builder --chown=appuser:appuser /app/target/*.jar app.jar
 
 USER appuser
-
-# MySQL client para connector nativo
-RUN apk add --no-cache mysql-connector-java && \
-    rm -rf /var/cache/apk/*
-
-# Copia JAR do builder
-COPY --from=builder /app/target/*.jar app.jar
 
 EXPOSE 8080
 
