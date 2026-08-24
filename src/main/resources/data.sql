@@ -17,7 +17,7 @@ INSERT IGNORE INTO usuarios (
     'Fulano de Tal',
     'fulano@detal.com',
     'fulanodetal',
-    '123456',
+    '$2a$12$aKzkwGUu98slUhJGqtnNbuYCo6Ymxtql1NQE1XX0fbAC8XNl6nzVm', -- 123Abc!
     'Rua de Cima',
     '123',
     'apto 10',
@@ -45,7 +45,7 @@ INSERT IGNORE INTO usuarios (
     'Beltrano da Silva',
     'beltrano@dasilva.com',
     'bsilva',
-    '888888',
+    '$2a$12$98G.k.adZfYHAO/IS3DLQu5H5vLcJDRt2U7aOUPA3i9LRPPjXoYXK', -- Xyz#987
     'Avenida Brasil',
     '765',
     '',
