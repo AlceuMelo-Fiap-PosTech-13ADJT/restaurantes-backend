@@ -2,10 +2,10 @@ package br.com.fiap.fase1tc.restaurantes_backend.services;
 
 import br.com.fiap.fase1tc.restaurantes_backend.dtos.UsuarioPasswordRequestDTO;
 import br.com.fiap.fase1tc.restaurantes_backend.dtos.UsuarioRequestDTO;
+import br.com.fiap.fase1tc.restaurantes_backend.dtos.UsuarioResponseFindDTO;
 import br.com.fiap.fase1tc.restaurantes_backend.entities.Usuario;
 import br.com.fiap.fase1tc.restaurantes_backend.factories.UsuarioFactory;
 import br.com.fiap.fase1tc.restaurantes_backend.repositories.IUsuarioRepository;
-import br.com.fiap.fase1tc.restaurantes_backend.repositories.UsuarioRepository;
 import br.com.fiap.fase1tc.restaurantes_backend.services.exceptions.EmailJaCadastradoException;
 import br.com.fiap.fase1tc.restaurantes_backend.services.exceptions.FalhaEmManipularUsuarioException;
 import br.com.fiap.fase1tc.restaurantes_backend.services.exceptions.LoginJaCadastradoException;
@@ -27,11 +27,25 @@ public class UsuarioService {
         this.passwordEncoder = passwordEncoder;
     }
 
-    public List<Usuario> findAllByNome(String nome) {
-        return this.usuarioRepository.findAllByNome(nome);
+    public List<UsuarioResponseFindDTO> findAllByNome(String nome) {
+        List<Usuario> usuarios = usuarioRepository.findAllByNome(nome);
+        return usuarios.stream()
+                .map(u -> new UsuarioResponseFindDTO(
+                        u.getId(),
+                        u.getNome(),
+                        u.getEmail(),
+                        u.getLogin(),
+                        u.getLogradouro(),
+                        u.getNumero(),
+                        u.getComplemento(),
+                        u.getBairro(),
+                        u.getCidade(),
+                        u.getEstado(),
+                        u.getCep(),
+                        u.getPerfil()
+                )).toList();
     }
-
-    public void save(UsuarioRequestDTO usuarioDTO) {
+    public Usuario save(UsuarioRequestDTO usuarioDTO) {
         if (!usuarioDTO.senha().equals(usuarioDTO.confirmacaoSenha())) {
             throw new SenhaEConfirmacaoDiferentesException();
         }
@@ -53,10 +67,12 @@ public class UsuarioService {
         usuario.setCidade(usuarioDTO.cidade());
         usuario.setEstado(usuarioDTO.estado());
         usuario.setCep(usuarioDTO.cep());
-        var save = this.usuarioRepository.save(usuario);
-        if (save == 0) {
+        Long generatedId = this.usuarioRepository.save(usuario);
+        if (generatedId == null || generatedId <= 0) {
             throw new FalhaEmManipularUsuarioException("Erro ao salvar usuário " +  usuario.getNome() + ".");
         }
+        usuario.setId(generatedId);
+        return usuario;
     }
 
     public void updatePassword(UsuarioPasswordRequestDTO usuarioPasswordDTO, Long id) {
@@ -75,27 +91,29 @@ public class UsuarioService {
     }
 
     public void update(UsuarioRequestDTO usuarioDTO, Long id) {
-        Optional<Usuario> usuarioOptionalCheck = this.usuarioRepository.findByEmail(usuarioDTO.email());
-        if (usuarioOptionalCheck.isPresent() &&
-                !usuarioOptionalCheck.get().getId().equals(id)) {
-            throw new EmailJaCadastradoException(usuarioDTO.email());
+        Usuario usuario = this.usuarioRepository.findById(id)
+                .orElseThrow(() -> new FalhaEmManipularUsuarioException("Usuário com ID " + id + " não encontrado."));
+        if (usuarioDTO.email() != null && !usuarioDTO.email().equals(usuario.getEmail())) {
+            if (this.usuarioRepository.findByEmail(usuarioDTO.email()).isPresent()) {
+                throw new EmailJaCadastradoException(usuarioDTO.email());
+            }
         }
-        usuarioOptionalCheck = this.usuarioRepository.findByLogin(usuarioDTO.login());
-        if (usuarioOptionalCheck.isPresent() &&
-                !usuarioOptionalCheck.get().getId().equals(id)) {
-            throw new LoginJaCadastradoException(usuarioDTO.login());
+        if (usuarioDTO.login() != null && !usuarioDTO.login().equals(usuario.getLogin())) {
+            if (this.usuarioRepository.findByLogin(usuarioDTO.login()).isPresent()) {
+                throw new LoginJaCadastradoException(usuarioDTO.login());
+            }
         }
-        Usuario usuario = UsuarioFactory.createUsuario(usuarioDTO.perfil());
-        usuario.setNome(usuarioDTO.nome());
-        usuario.setEmail(usuarioDTO.email());
-        usuario.setLogin(usuarioDTO.login());
-        usuario.setLogradouro(usuarioDTO.logradouro());
-        usuario.setNumero(usuarioDTO.numero());
-        usuario.setComplemento(usuarioDTO.complemento());
-        usuario.setBairro(usuarioDTO.bairro());
-        usuario.setCidade(usuarioDTO.cidade());
-        usuario.setEstado(usuarioDTO.estado());
-        usuario.setCep(usuarioDTO.cep());
+        if (usuarioDTO.nome() != null) usuario.setNome(usuarioDTO.nome());
+        if (usuarioDTO.email() != null) usuario.setEmail(usuarioDTO.email());
+        if (usuarioDTO.login() != null) usuario.setLogin(usuarioDTO.login());
+        if (usuarioDTO.logradouro() != null) usuario.setLogradouro(usuarioDTO.logradouro());
+        if (usuarioDTO.numero() != null) usuario.setNumero(usuarioDTO.numero());
+        if (usuarioDTO.complemento() != null) usuario.setComplemento(usuarioDTO.complemento());
+        if (usuarioDTO.bairro() != null) usuario.setBairro(usuarioDTO.bairro());
+        if (usuarioDTO.cidade() != null) usuario.setCidade(usuarioDTO.cidade());
+        if (usuarioDTO.estado() != null) usuario.setEstado(usuarioDTO.estado());
+        if (usuarioDTO.cep() != null) usuario.setCep(usuarioDTO.cep());
+        if (usuarioDTO.perfil() != null) usuario.setPerfil(usuarioDTO.perfil());
         var update = this.usuarioRepository.update(usuario, id);
         if (update == 0) {
             throw new FalhaEmManipularUsuarioException("Falha em atualizar o usuário id " + id + ".");

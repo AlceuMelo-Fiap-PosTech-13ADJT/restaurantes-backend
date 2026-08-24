@@ -2,7 +2,13 @@ package br.com.fiap.fase1tc.restaurantes_backend.repositories;
 
 import br.com.fiap.fase1tc.restaurantes_backend.entities.Usuario;
 import br.com.fiap.fase1tc.restaurantes_backend.mappers.UsuarioMapper;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.jdbc.core.simple.JdbcClient;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime;
@@ -13,9 +19,20 @@ import java.util.Optional;
 public class UsuarioRepository implements IUsuarioRepository {
 
     private final JdbcClient jdbcClient;
+    private final JdbcTemplate jdbcTemplate; // Adicione o JdbcTemplate para usar KeyHolder
 
-    public UsuarioRepository(JdbcClient jdbcClient) {
+    public UsuarioRepository(JdbcClient jdbcClient, JdbcTemplate jdbcTemplate) {
         this.jdbcClient = jdbcClient;
+        this.jdbcTemplate = jdbcTemplate;
+    }
+
+    @Override
+    public Optional<Usuario> findById(Long id) {
+        return this.jdbcClient
+                .sql("SELECT * FROM usuarios WHERE id = :id")
+                .param("id", id)
+                .query(new UsuarioMapper())
+                .optional();
     }
 
     @Override
@@ -46,27 +63,33 @@ public class UsuarioRepository implements IUsuarioRepository {
     }
 
     @Override
-    public Integer save(Usuario usuario) {
-        return this.jdbcClient
-                .sql("INSERT INTO usuarios (nome, email, login, senha, logradouro, numero, complemento, " +
-                        "bairro, cidade, estado, cep, perfil, created_at, updated_at) VALUES (:nome, :email, " +
-                        ":login, :senha, :logradouro, :numero, :complemento, :bairro, :cidade, :estado, " +
-                        ":cep, :perfil, :created_at, :updated_at)")
-                .param("nome", usuario.getNome())
-                .param("email", usuario.getEmail())
-                .param("login", usuario.getLogin())
-                .param("senha", usuario.getSenha())
-                .param("logradouro", usuario.getLogradouro())
-                .param("numero", usuario.getNumero())
-                .param("complemento", usuario.getComplemento())
-                .param("bairro", usuario.getBairro())
-                .param("cidade", usuario.getCidade())
-                .param("estado", usuario.getEstado())
-                .param("cep", usuario.getCep())
-                .param("perfil", usuario.getPerfil().name())
-                .param("created_at", LocalDateTime.now())
-                .param("updated_at", LocalDateTime.now())
-                .update();
+    public Long save(Usuario usuario) {
+        String sql = "INSERT INTO usuarios (nome, email, login, senha, logradouro, numero, complemento, " +
+                "bairro, cidade, estado, cep, perfil, created_at, updated_at) " +
+                "VALUES (:nome, :email, :login, :senha, :logradouro, :numero, :complemento, " +
+                ":bairro, :cidade, :estado, :cep, :perfil, :created_at, :updated_at)";
+        KeyHolder keyHolder = new GeneratedKeyHolder();
+        SqlParameterSource parameters = new MapSqlParameterSource()
+                .addValue("nome", usuario.getNome())
+                .addValue("email", usuario.getEmail())
+                .addValue("login", usuario.getLogin())
+                .addValue("senha", usuario.getSenha())
+                .addValue("logradouro", usuario.getLogradouro())
+                .addValue("numero", usuario.getNumero())
+                .addValue("complemento", usuario.getComplemento())
+                .addValue("bairro", usuario.getBairro())
+                .addValue("cidade", usuario.getCidade())
+                .addValue("estado", usuario.getEstado())
+                .addValue("cep", usuario.getCep())
+                .addValue("perfil", usuario.getPerfil().name())
+                .addValue("created_at", LocalDateTime.now())
+                .addValue("updated_at", LocalDateTime.now());
+        NamedParameterJdbcTemplate namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(jdbcTemplate);
+        namedParameterJdbcTemplate.update(sql, parameters, keyHolder, new String[]{"id"});
+        if (keyHolder.getKeyList().isEmpty()) {
+            throw new RuntimeException("Falha ao recuperar o ID gerado pelo banco de dados.");
+        }
+        return keyHolder.getKey().longValue();
     }
 
     @Override

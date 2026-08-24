@@ -2,6 +2,8 @@ package br.com.fiap.fase1tc.restaurantes_backend.controllers;
 
 import br.com.fiap.fase1tc.restaurantes_backend.dtos.UsuarioPasswordRequestDTO;
 import br.com.fiap.fase1tc.restaurantes_backend.dtos.UsuarioRequestDTO;
+import br.com.fiap.fase1tc.restaurantes_backend.dtos.UsuarioResponseDTO;
+import br.com.fiap.fase1tc.restaurantes_backend.dtos.UsuarioResponseFindDTO;
 import br.com.fiap.fase1tc.restaurantes_backend.entities.Usuario;
 import br.com.fiap.fase1tc.restaurantes_backend.services.UsuarioService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -44,7 +46,7 @@ public class UsuarioController {
         }
     )
     @GetMapping
-    public ResponseEntity<List<Usuario>> findAllByNome(
+    public ResponseEntity<List<UsuarioResponseFindDTO>> findAllByNome(
             @Parameter(description = "Nome parcial para filtragem") @RequestParam("nome") String nome
     ) {
         logger.info("GET -> /api/v1/usuarios?nome=" + nome);
@@ -56,7 +58,12 @@ public class UsuarioController {
         summary = "Cadastrar novo usuário",
         description = "Realiza a inserção de um novo usuário no banco de dados.",
         responses = {
-            @ApiResponse(responseCode = "201", description = "Usuário criado com sucesso"),
+            @ApiResponse(responseCode = "201", description = "Usuário criado com sucesso",
+                content = {@Content(mediaType = "application/json",
+                    schema = @Schema(implementation = UsuarioResponseDTO.class),
+                    examples = @ExampleObject(value = "{\"id\":1, \"nome\":\"João Silva\", \"email\":\"joao@email.com\"}")
+                )}
+            ),
             @ApiResponse(responseCode = "409", description = "E-mail ou login já cadastrado",
                 content = {@Content(mediaType = "application/json",
                     schema = @Schema(implementation = ProblemDetail.class),
@@ -66,12 +73,13 @@ public class UsuarioController {
         }
     )
     @PostMapping
-    public ResponseEntity<Void> save(
+    public ResponseEntity<UsuarioResponseDTO> save(
             @RequestBody UsuarioRequestDTO usuarioDTO
     ) {
         logger.info("POST -> /api/v1/usuarios");
-        this.usuarioService.save(usuarioDTO);
-        return ResponseEntity.status(HttpStatus.CREATED).build();
+        Usuario usuario = this.usuarioService.save(usuarioDTO);
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(new UsuarioResponseDTO(usuario.getId(), usuario.getNome(), usuario.getEmail()));
     }
 
     @Operation(
