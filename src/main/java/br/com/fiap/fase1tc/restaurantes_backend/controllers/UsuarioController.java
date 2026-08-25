@@ -6,6 +6,7 @@ import br.com.fiap.fase1tc.restaurantes_backend.dtos.UsuarioResponseDTO;
 import br.com.fiap.fase1tc.restaurantes_backend.dtos.UsuarioResponseFindDTO;
 import br.com.fiap.fase1tc.restaurantes_backend.entities.Usuario;
 import br.com.fiap.fase1tc.restaurantes_backend.services.UsuarioService;
+import br.com.fiap.fase1tc.restaurantes_backend.services.exceptions.ParametroFaltandoException;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -47,8 +48,11 @@ public class UsuarioController {
     )
     @GetMapping
     public ResponseEntity<List<UsuarioResponseFindDTO>> findAllByNome(
-            @Parameter(description = "Nome parcial para filtragem") @RequestParam("nome") String nome
+            @Parameter(description = "Nome parcial para filtragem") @RequestParam(value = "nome", required = false) String nome
     ) {
+        if (nome == null || nome.isBlank()) {
+            throw new ParametroFaltandoException("O parâmetro 'nome' é obrigatório");
+        }
         logger.info("GET -> /api/v1/usuarios?nome=" + nome);
         var usuarios = this.usuarioService.findAllByNome(nome);
         return ResponseEntity.ok(usuarios);
@@ -62,6 +66,12 @@ public class UsuarioController {
                 content = {@Content(mediaType = "application/json",
                     schema = @Schema(implementation = UsuarioResponseDTO.class),
                     examples = @ExampleObject(value = "{\"id\":1, \"nome\":\"João Silva\", \"email\":\"joao@email.com\"}")
+                )}
+            ),
+            @ApiResponse(responseCode = "400", description = "Dados inválidos ou falha ao salvar",
+                content = {@Content(mediaType = "application/json",
+                    schema = @Schema(implementation = ProblemDetail.class),
+                    examples = @ExampleObject(value = "{\"title\":\"Bad Request\",\"status\":400,\"detail\":\"As senhas não conferem\"}")
                 )}
             ),
             @ApiResponse(responseCode = "409", description = "E-mail ou login já cadastrado",
@@ -87,12 +97,24 @@ public class UsuarioController {
         description = "Altera a senha de um usuário específico.",
         responses = {
             @ApiResponse(responseCode = "204", description = "Senha atualizada com sucesso"),
-                @ApiResponse(responseCode = "400", description = "Dados inválidos ou falha na atualização", // 400 para senhas diferentes é aceitável
-                        content = {@Content(mediaType = "application/json",
-                                schema = @Schema(implementation = ProblemDetail.class),
-                                examples = @ExampleObject(value = "{\"title\":\"Bad Request\",\"status\":400,\"detail\":\"As senhas não conferem\"}")
-                        )}
-                )
+            @ApiResponse(responseCode = "400", description = "Dados inválidos ou falha na atualização",
+                content = {@Content(mediaType = "application/json",
+                    schema = @Schema(implementation = ProblemDetail.class),
+                    examples = @ExampleObject(value = "{\"title\":\"Bad Request\",\"status\":400,\"detail\":\"As senhas não conferem\"}")
+                )}
+            ),
+            @ApiResponse(responseCode = "404", description = "Usuário não encontrado",
+                content = {@Content(mediaType = "application/json",
+                    schema = @Schema(implementation = ProblemDetail.class),
+                    examples = @ExampleObject(value = "{\"title\":\"Not Found\",\"status\":404,\"detail\":\"Usuário com ID não encontrado\"}")
+                )}
+            ),
+            @ApiResponse(responseCode = "409", description = "Conflito ao atualizar dados",
+                content = {@Content(mediaType = "application/json",
+                    schema = @Schema(implementation = ProblemDetail.class),
+                    examples = @ExampleObject(value = "{\"title\":\"Conflict\",\"status\":409,\"detail\":\"Dados de validação falharam ou duplicidade\"}")
+                )}
+            )
         }
     )
     @PutMapping("/{id}/password")
@@ -110,12 +132,24 @@ public class UsuarioController {
         description = "Atualiza as informações cadastrais de um usuário existente.",
         responses = {
             @ApiResponse(responseCode = "204", description = "Usuário atualizado com sucesso"),
-                @ApiResponse(responseCode = "409", description = "Conflito ao atualizar dados",
-                    content = {@Content(mediaType = "application/json",
-                        schema = @Schema(implementation = ProblemDetail.class),
-                        examples = @ExampleObject(value = "{\"title\":\"Conflict\",\"status\":409,\"detail\":\"Dados de validação falharam ou duplicidade\"}")
-                    )}
-                )
+            @ApiResponse(responseCode = "400", description = "Dados inválidos ou falha na atualização",
+                content = {@Content(mediaType = "application/json",
+                    schema = @Schema(implementation = ProblemDetail.class),
+                    examples = @ExampleObject(value = "{\"title\":\"Bad Request\",\"status\":400,\"detail\":\"Falha em atualizar o usuário ID\"}")
+                )}
+            ),
+            @ApiResponse(responseCode = "404", description = "Usuário não encontrado",
+                content = {@Content(mediaType = "application/json",
+                    schema = @Schema(implementation = ProblemDetail.class),
+                    examples = @ExampleObject(value = "{\"title\":\"Not Found\",\"status\":404,\"detail\":\"Usuário com ID não encontrado\"}")
+                )}
+            ),
+            @ApiResponse(responseCode = "409", description = "Conflito ao atualizar dados",
+                content = {@Content(mediaType = "application/json",
+                    schema = @Schema(implementation = ProblemDetail.class),
+                    examples = @ExampleObject(value = "{\"title\":\"Conflict\",\"status\":409,\"detail\":\"Dados de validação falharam ou duplicidade\"}")
+                )}
+            )
         }
     )
     @PutMapping("/{id}")
@@ -133,6 +167,12 @@ public class UsuarioController {
         description = "Remove um usuário do sistema permanentemente.",
         responses = {
             @ApiResponse(responseCode = "204", description = "Usuário removido com sucesso"),
+            @ApiResponse(responseCode = "400", description = "Dados inválidos ou falha na atualização",
+                content = {@Content(mediaType = "application/json",
+                    schema = @Schema(implementation = ProblemDetail.class),
+                    examples = @ExampleObject(value = "{\"title\":\"Bad Request\",\"status\":400,\"detail\":\"Falha ao excluir o usuário\"}")
+                )}
+            ),
             @ApiResponse(responseCode = "404", description = "Usuário não encontrado",
                 content = {@Content(mediaType = "application/json",
                     schema = @Schema(implementation = ProblemDetail.class),

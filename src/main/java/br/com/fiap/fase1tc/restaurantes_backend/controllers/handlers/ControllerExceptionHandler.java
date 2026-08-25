@@ -64,4 +64,26 @@ public class ControllerExceptionHandler {
         return problemDetail;
     }
 
+    @ExceptionHandler(ParametroFaltandoException.class)
+    public ProblemDetail handleParametroFaltandoException(ParametroFaltandoException ex) {
+        ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(
+                HttpStatus.BAD_REQUEST,
+                ex.getMessage()
+        );
+        problemDetail.setTitle("Parâmetro faltando");
+        problemDetail.setType(java.net.URI.create("https://backend.restaurantes.fiap/errors/parametro-faltando"));
+        return problemDetail;
+    }
+
+    @ExceptionHandler(CredenciaisIncorretasException.class)
+    public ProblemDetail handleCredenciaisIncorretasException(CredenciaisIncorretasException ex) {
+        ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(
+                HttpStatus.FORBIDDEN,
+                ex.getMessage()
+        );
+        problemDetail.setTitle("Credenciais incorretas");
+        problemDetail.setType(java.net.URI.create("https://backend.restaurantes.fiap/errors/credenciais-incorretas"));
+        return problemDetail;
+    }
+
 }

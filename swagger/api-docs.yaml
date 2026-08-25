@@ -129,7 +129,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: "#/components/schemas/Usuario"
+                  $ref: "#/components/schemas/UsuarioResponseFindDTO"
         "400":
           description: Parâmetro de busca inválido
           content:
@@ -155,6 +155,14 @@ paths:
       responses:
         "201":
           description: Usuário criado com sucesso
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UsuarioResponseDTO"
+              example:
+                id: 1
+                nome: João Silva
+                email: joao@email.com
         "409":
           description: E-mail ou login já cadastrado
           content:
@@ -290,12 +298,6 @@ components:
           - CLIENTE
           - PROPRIETARIO
           example: CLIENTE
-      required:
-      - confirmacaoSenha
-      - email
-      - login
-      - nome
-      - senha
     UsuarioPasswordRequestDTO:
       type: object
       description: Dados para alteração de senha
@@ -311,6 +313,27 @@ components:
       required:
       - confirmacaoSenha
       - senha
+    UsuarioResponseDTO:
+      type: object
+      description: Resposta de salvamento de usuário bem-sucedido
+      properties:
+        id:
+          type: integer
+          format: int64
+          description: Id
+          example: 1
+        nome:
+          type: string
+          description: Nome completo
+          example: João Silva
+        email:
+          type: string
+          description: E-mail único
+          example: joao@email.com
+      required:
+      - email
+      - id
+      - nome
     AuthLoginRequestDTO:
       type: object
       description: Credenciais para autenticação
@@ -326,42 +349,59 @@ components:
       required:
       - login
       - senha
-    Usuario:
+    UsuarioResponseFindDTO:
       type: object
+      description: Dados para cadastro ou atualização de usuário
       properties:
         id:
           type: integer
           format: int64
+          description: Id
+          example: 1
         nome:
           type: string
+          description: Nome completo
+          example: João Silva
         email:
           type: string
+          description: E-mail único
+          example: joao@email.com
         login:
           type: string
-        senha:
-          type: string
+          description: Nome de login
+          example: joaosilva
         logradouro:
           type: string
+          description: Logradouro
+          example: Rua Principal
         numero:
           type: string
+          description: Número
+          example: "100"
         complemento:
           type: string
+          description: Complemento
+          example: Apto 12
         bairro:
           type: string
+          description: Bairro
+          example: Centro
         cidade:
           type: string
+          description: Cidade
+          example: São Paulo
         estado:
           type: string
+          description: Estado (UF)
+          example: SP
         cep:
           type: string
+          description: CEP
+          example: 01001-000
         perfil:
           type: string
+          description: Perfil do usuário
           enum:
-          - PROPRIETARIO
           - CLIENTE
-        created_at:
-          type: string
-          format: date-time
-        updated_at:
-          type: string
-          format: date-time
+          - PROPRIETARIO
+          example: CLIENTE

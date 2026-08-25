@@ -6,10 +6,7 @@ import br.com.fiap.fase1tc.restaurantes_backend.dtos.UsuarioResponseFindDTO;
 import br.com.fiap.fase1tc.restaurantes_backend.entities.Usuario;
 import br.com.fiap.fase1tc.restaurantes_backend.factories.UsuarioFactory;
 import br.com.fiap.fase1tc.restaurantes_backend.repositories.IUsuarioRepository;
-import br.com.fiap.fase1tc.restaurantes_backend.services.exceptions.EmailJaCadastradoException;
-import br.com.fiap.fase1tc.restaurantes_backend.services.exceptions.FalhaEmManipularUsuarioException;
-import br.com.fiap.fase1tc.restaurantes_backend.services.exceptions.LoginJaCadastradoException;
-import br.com.fiap.fase1tc.restaurantes_backend.services.exceptions.SenhaEConfirmacaoDiferentesException;
+import br.com.fiap.fase1tc.restaurantes_backend.services.exceptions.*;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -45,6 +42,7 @@ public class UsuarioService {
                         u.getPerfil()
                 )).toList();
     }
+
     public Usuario save(UsuarioRequestDTO usuarioDTO) {
         if (!usuarioDTO.senha().equals(usuarioDTO.confirmacaoSenha())) {
             throw new SenhaEConfirmacaoDiferentesException();
@@ -76,6 +74,8 @@ public class UsuarioService {
     }
 
     public void updatePassword(UsuarioPasswordRequestDTO usuarioPasswordDTO, Long id) {
+        Usuario usuario = this.usuarioRepository.findById(id)
+                .orElseThrow(() -> new EntidadeNaoEncontradaException("Usuário com ID " + id + " não encontrado."));
         if (usuarioPasswordDTO.senha() == null ||
             usuarioPasswordDTO.confirmacaoSenha() == null) {
             throw new FalhaEmManipularUsuarioException("Dados informados inconsistentes.");
@@ -92,7 +92,7 @@ public class UsuarioService {
 
     public void update(UsuarioRequestDTO usuarioDTO, Long id) {
         Usuario usuario = this.usuarioRepository.findById(id)
-                .orElseThrow(() -> new FalhaEmManipularUsuarioException("Usuário com ID " + id + " não encontrado."));
+                .orElseThrow(() -> new EntidadeNaoEncontradaException("Usuário com ID " + id + " não encontrado."));
         if (usuarioDTO.email() != null && !usuarioDTO.email().equals(usuario.getEmail())) {
             if (this.usuarioRepository.findByEmail(usuarioDTO.email()).isPresent()) {
                 throw new EmailJaCadastradoException(usuarioDTO.email());
@@ -116,11 +116,13 @@ public class UsuarioService {
         if (usuarioDTO.perfil() != null) usuario.setPerfil(usuarioDTO.perfil());
         var update = this.usuarioRepository.update(usuario, id);
         if (update == 0) {
-            throw new FalhaEmManipularUsuarioException("Falha em atualizar o usuário id " + id + ".");
+            throw new FalhaEmManipularUsuarioException("Falha em atualizar o usuário ID " + id + ".");
         }
     }
 
     public void delete(Long id) {
+        Usuario usuario = this.usuarioRepository.findById(id)
+                .orElseThrow(() -> new EntidadeNaoEncontradaException("Usuário com ID " + id + " não encontrado."));
         var delete = this.usuarioRepository.delete(id);
         if (delete == 0) {
             throw new FalhaEmManipularUsuarioException("Falha em excluir o usuário id " + id + ".");

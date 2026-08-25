@@ -1,6 +1,8 @@
 package br.com.fiap.fase1tc.restaurantes_backend.controllers;
 
 import br.com.fiap.fase1tc.restaurantes_backend.dtos.AuthLoginRequestDTO;
+import br.com.fiap.fase1tc.restaurantes_backend.dtos.UsuarioResponseDTO;
+import br.com.fiap.fase1tc.restaurantes_backend.dtos.UsuarioResponseFindDTO;
 import br.com.fiap.fase1tc.restaurantes_backend.services.AuthService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -40,28 +42,20 @@ public class AuthController {
             @ApiResponse(responseCode = "401", description = "Usuário ou senha incorretos",
                 content = {@Content(mediaType = "application/json",
                     schema = @Schema(implementation = ProblemDetail.class),
-                    examples = @ExampleObject(value = "{\"type\":\"about:blank\",\"title\":\"Unauthorized\",\"status\":401,\"detail\":\"Usuário ou senha incorretos\",\"instance\":\"/api/v1/auth/login\"}")
+                    examples = @ExampleObject(value = "{\"type\":\"about:blank\",\"title\":\"Unauthorized\",\"status\":401,\"detail\":\"Credenciais incorretas\",\"instance\":\"/api/v1/auth/login\"}")
                 )}
             ),
             @ApiResponse(responseCode = "400", description = "Dados de requisição inválidos",
                 content = {@Content(mediaType = "application/json",
                     schema = @Schema(implementation = ProblemDetail.class),
-                    examples = @ExampleObject(value = "{\"type\":\"about:blank\",\"title\":\"Bad Request\",\"status\":400,\"detail\":\"Campos obrigatórios ausentes\",\"instance\":\"/api/v1/auth/login\"}")
+                    examples = @ExampleObject(value = "{\"type\":\"about:blank\",\"title\":\"Bad Request\",\"status\":400,\"detail\":\"Dados de requisição inválidos\",\"instance\":\"/api/v1/auth/login\"}")
                 )}
             )
         }
     )
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody AuthLoginRequestDTO authLoginDTO) {
+    public ResponseEntity<UsuarioResponseFindDTO> login(@RequestBody AuthLoginRequestDTO authLoginDTO) {
         logger.info("POST -> /api/v1/auth/login");
-        if (this.authService.loginAuth(authLoginDTO)) {
-            return ResponseEntity.ok().build();
-        } else {
-            ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(
-                    HttpStatus.UNAUTHORIZED, "Usuário ou senha incorretos");
-            problemDetail.setTitle("Unauthorized");
-            problemDetail.setType(java.net.URI.create("https://backend.restaurantes.fiap/errors/unauthorized"));
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(problemDetail);
-        }
+        return ResponseEntity.status(HttpStatus.OK).body(this.authService.loginAuth(authLoginDTO));
     }
 }
