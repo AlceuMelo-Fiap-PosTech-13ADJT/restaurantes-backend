@@ -1,10 +1,10 @@
 # Restaurantes Backend - Tech Challenge Fase 1
 
-![Java](https://img.shields.io/badge/java-%23ED8B00.svg?style=flat&logo=openjdk&logoColor=white)
-![Spring Boot](https://img.shields.io/badge/spring-%236DB33F.svg?style=flat&logo=spring&logoColor=white)
-![MySQL](https://img.shields.io/badge/mysql-%2300F449.svg?style=flat&logo=mysql&logoColor=white)
-![Docker](https://img.shields.io/badge/docker-%230db7ed.svg?style=flat&logo=docker&logoColor=white)
-![Swagger](https://img.shields.io/badge/swagger-%23851177.svg?style=flat&logo=swagger&logoColor=white)
+![Java](https://img.shields.io/badge/java-%23F29111.svg?style=flat&logo=openjdk&logoColor=white)
+![Spring Boot](https://img.shields.io/badge/spring-%236db33f.svg?style=flat&logo=spring&logoColor=white)
+![MySQL](https://img.shields.io/badge/mysql-%233E6E93.svg?style=flat&logo=mysql&logoColor=white)
+![Docker](https://img.shields.io/badge/docker-%231D63ED.svg?style=flat&logo=docker&logoColor=white)
+![Swagger](https://img.shields.io/badge/swagger-%23173647.svg?style=flat&logo=swagger&logoColor=white)
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue)](https://opensource.org/licenses/MIT)
 
 > **Pós Tech em Arquitetura e Desenvolvimento em JAVA - FIAP**  
@@ -18,27 +18,33 @@ Este projeto consiste no backend de um sistema de gestão para um grupo de resta
 ## 🚀 Tecnologias e Ferramentas
 
 - **Linguagem**: Java 17+
-- **Framework**: Spring Boot 3.x
+- **Framework**: Spring Boot 3+
 - **Persistência**: JdbcTemplate (Abordagem SQL pura, sem JPA)
-- **Bancos de Dados**: MySQL (Ambiente de Produção) e H2 (Ambiente de Teste/Dev)
-- **Containerização**: Docker e Docker Compose
+- **Bancos de Dados**: MySQL 8.0 (Ambiente de Produção) e H2 (Ambiente de Teste/Dev)
+- **Conteinerização**: Docker e Docker Compose
 - **Documentação**: Swagger/OpenAPI
 - **Testes**: Postman Collection
 
 ## 📂 Estrutura de Diretórios
 
 ```text
-src/main/java/br/com/fiap/fase1tc/restaurantes_backend/
-├── config/             # Configurações globais (Swagger, Security, etc.)
-├── controllers/        # Camada de Entrada: Define os endpoints e mapeia requisições
-│   └── handlers/       # Tratamento global de exceções (ProblemDetail RFC 7807)
-├── dtos/               # Data Transfer Objects: Objetos para entrada e saída de dados da API
-├── entities/           # Modelagem de Dados: Representação das tabelas do banco
-│   └── enums/          # Enumerações para tipos de perfil e status
-├── factories/          # Padrões Criacionais: Lógica de criação de objetos complexos
-├── mappers/            # Conversão de dados entre Entidades e DTOs
-├── repositories/       # Camada de Acesso a Dados: Consultas via JdbcTemplate
-└── services/           # Camada de Negócio: Onde reside a regra de ouro e validações
+restaurantes-backend/
+├── collection/                 # Collection do postman: testes dos endpoints
+├── src/main/
+│   ├── java/br/com/fiap/fase1tc/restaurantes_backend/
+│   │   ├── config/             # Configurações globais (Swagger, Security, etc.)
+│   │   ├── controllers/        # Camada de Entrada: Define os endpoints e mapeia requisições
+│   │   │   └── handlers/       # Tratamento global de exceções (ProblemDetail RFC 7807)
+│   │   ├── dtos/               # Data Transfer Objects: Objetos para entrada e saída de dados da API
+│   │   ├── entities/           # Modelagem de Dados: Representação das tabelas do banco
+│   │   │   └── enums/          # Enumerações para tipos de perfil e status
+│   │   ├── factories/          # Padrões Criacionais: Lógica de criação de objetos complexos
+│   │   ├── mappers/            # Conversão de dados entre Entidades e DTOs
+│   │   ├── repositories/       # Camada de Acesso a Dados: Consultas via JdbcTemplate
+│   │   └── services/           # Camada de Negócio: Onde reside a regra de ouro e validações
+│   │       └── exceptions/     # Exceções customizadas
+│   └── resources/              # Propriedades da aplicação e scripts de inicialização do BD
+└── swagger/                    # Documentação Swagger/OpenAPI
 ```
 
 ## 🏗️ Arquitetura do Sistema
@@ -60,8 +66,8 @@ O projeto utiliza uma **Arquitetura em Camadas (Layered Architecture)** para gar
 ## 🛠️ Instalação e Execução
 
 ### Pré-requisitos
-- Docker e Docker Compose instalados.
-- JDK 17+.
+- Docker e Docker Compose instalados
+- JDK 21
 
 ### Execução via Docker (Produção)
 Para subir a aplicação com o banco de dados MySQL configurado:
