@@ -1,0 +1,12 @@
+target/
+.idea/
+*.iml
+.vscode/
+.git/
+.env
+postman/
+collection/
+swagger/
+documentos/
+logs/
+*.md

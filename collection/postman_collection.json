@@ -1,0 +1,278 @@
+{
+  "info": {
+    "_postman_id": "dbe2ecae-a76a-44de-aa27-a73f88692537",
+    "name": "Fiap PosTech 13adjt Fase1 TechChallenge",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "56523386",
+    "_collection_link": "https://go.postman.co/collection/56523386-dbe2ecae-a76a-44de-aa27-a73f88692537?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "/api/v1/usuarios",
+      "item": [
+        {
+          "name": "GET usuários by nome (200)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{LOCAL_HOST}}/api/v1/usuarios?nome=silva",
+              "host": ["{{LOCAL_HOST}}"],
+               "path": ["api", "v1", "usuarios"],
+              "query": [{ "key": "nome", "value": "silva" }]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "GET usuários - Parâmetro Inválido (400)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{LOCAL_HOST}}/api/v1/usuarios",
+              "host": ["{{LOCAL_HOST}}"],
+               "path": ["api", "v1", "usuarios"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "POST usuários - Sucesso (201)",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"nome\": \"Antonio Ferreira\",\r\n    \"email\": \"antonio@ferreira.com\",\r\n    \"login\": \"aferreira\",\r\n    \"senha\": \"abc123\",\r\n    \"confirmacaoSenha\": \"abc123\",\r\n    \"logradouro\": \"Rua Fernando Pessoa\",\r\n    \"numero\": \"2654\",\r\n    \"complemento\": \"fundos\",\r\n    \"bairro\": \"Santa Cecília\",\r\n    \"cidade\": \"Atos Portos\",\r\n    \"estado\": \"SP\",\r\n    \"cep\": \"09875-100\",\r\n    \"perfil\": \"CLIENTE\"\r\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "url": {
+              "raw": "{{LOCAL_HOST}}/api/v1/usuarios",
+              "host": ["{{LOCAL_HOST}}"],
+               "path": ["api", "v1", "usuarios"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "POST usuários - Conflito (409)",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"nome\": \"Antonio Ferreira\",\r\n    \"email\": \"antonio@ferreira.com\",\r\n    \"login\": \"bsilva\",\r\n    \"senha\": \"abc123\",\r\n    \"confirmacaoSenha\": \"abc123\",\r\n    \"logradouro\": \"Rua Fernando Pessoa\",\r\n    \"numero\": \"2654\",\r\n    \"complemento\": \"fundos\",\r\n    \"bairro\": \"Santa Cecília\",\r\n    \"cidade\": \"Atos Portos\",\r\n    \"estado\": \"SP\",\r\n    \"cep\": \"09875-100\",\r\n    \"perfil\": \"CLIENTE\"\r\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "url": {
+              "raw": "{{LOCAL_HOST}}/api/v1/usuarios",
+              "host": ["{{LOCAL_HOST}}"],
+               "path": ["api", "v1", "usuarios"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "PUT usuários - Sucesso (204)",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"nome\": \"Antonio Ferreira Silva\",\r\n    \"email\": \"antonio@ferreira.com\",\r\n    \"login\": \"aferreira\",\r\n    \"logradouro\": \"Rua Fernando Pessoa\",\r\n    \"numero\": \"2654\",\r\n    \"complemento\": \"fundos\",\r\n    \"bairro\": \"Santa Cecília\",\r\n    \"cidade\": \"Atos Portos\",\r\n    \"estado\": \"SP\",\r\n    \"cep\": \"09875-111\",\r\n    \"perfil\": \"PROPRIETARIO\"\r\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "url": {
+              "raw": "{{LOCAL_HOST}}/api/v1/usuarios/3",
+              "host": ["{{LOCAL_HOST}}"],
+               "path": ["api", "v1", "usuarios", "3"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "PUT usuários - Não Encontrado (404)",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"nome\": \"Antonio Ferreira Silva\",\r\n    \"email\": \"antonio@ferreira.com\",\r\n    \"login\": \"aferreira\",\r\n    \"logradouro\": \"Rua Fernando Pessoa\",\r\n    \"numero\": \"2654\",\r\n    \"complemento\": \"fundos\",\r\n    \"bairro\": \"Santa Cecília\",\r\n    \"cidade\": \"Atos Portos\",\r\n    \"estado\": \"SP\",\r\n    \"cep\": \"09875-111\",\r\n    \"perfil\": \"PROPRIETARIO\"\r\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "url": {
+              "raw": "{{LOCAL_HOST}}/api/v1/usuarios/999",
+              "host": ["{{LOCAL_HOST}}"],
+               "path": ["api", "v1", "usuarios", "999"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "PUT usuários - Conflito (409)",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"nome\": \"Antonio Ferreira Silva\",\r\n    \"email\": \"antonio@ferreira.com\",\r\n    \"login\": \"aferreira\",\r\n    \"logradouro\": \"Rua Fernando Pessoa\",\r\n    \"numero\": \"2654\",\r\n    \"complemento\": \"fundos\",\r\n    \"bairro\": \"Santa Cecília\",\r\n    \"cidade\": \"Atos Portos\",\r\n    \"estado\": \"SP\",\r\n    \"cep\": \"09875-111\",\r\n    \"perfil\": \"PROPRIETARIO\"\r\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "url": {
+              "raw": "{{LOCAL_HOST}}/api/v1/usuarios/3",
+              "host": ["{{LOCAL_HOST}}"],
+               "path": ["api", "v1", "usuarios", "3"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "PUT usuários password - Sucesso (204)",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"senha\": \"0123abcd\",\r\n    \"confirmacaoSenha\": \"0123abcd\"\r\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "url": {
+              "raw": "{{LOCAL_HOST}}/api/v1/usuarios/3/password",
+              "host": ["{{LOCAL_HOST}}"],
+               "path": ["api", "v1", "usuarios", "3", "password"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "PUT usuários password - Senhas Divergentes (409)",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"senha\": \"123\",\r\n    \"confirmacaoSenha\": \"456\"\r\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "url": {
+              "raw": "{{LOCAL_HOST}}/api/v1/usuarios/3/password",
+              "host": ["{{LOCAL_HOST}}"],
+               "path": ["api", "v1", "usuarios", "3", "password"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "PUT usuários password - Não Encontrado (404)",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"senha\": \"0123abcd\",\r\n    \"confirmacaoSenha\": \"0123abcd\"\r\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "url": {
+              "raw": "{{LOCAL_HOST}}/api/v1/usuarios/999/password",
+              "host": ["{{LOCAL_HOST}}"],
+               "path": ["api", "v1", "usuarios", "999", "password"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "DELETE usuários - Sucesso (204)",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{LOCAL_HOST}}/api/v1/usuarios/3",
+              "host": ["{{LOCAL_HOST}}"],
+               "path": ["api", "v1", "usuarios", "3"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "DELETE usuários - Não Encontrado (404)",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{LOCAL_HOST}}/api/v1/usuarios/999",
+              "host": ["{{LOCAL_HOST}}"],
+               "path": ["api", "v1", "usuarios", "999"]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "/api/v1/auth",
+      "item": [
+        {
+          "name": "POST login - Sucesso (200)",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"login\": \"aferreira\",\r\n    \"senha\": \"0123abcd\"\r\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "url": {
+              "raw": "{{LOCAL_HOST}}/api/v1/auth/login",
+              "host": ["{{LOCAL_HOST}}"],
+               "path": ["api", "v1", "auth", "login"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "POST login - Credenciais Incorretas (401)",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"login\": \"usuario_errado\",\r\n    \"senha\": \"senha_errada\"\r\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "url": {
+              "raw": "{{LOCAL_HOST}}/api/v1/auth/login",
+              "host": ["{{LOCAL_HOST}}"],
+               "path": ["api", "v1", "auth", "login"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "POST login - Dados Inválidos (400)",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"login\": \"apenas_login\"\r\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "url": {
+              "raw": "{{LOCAL_HOST}}/api/v1/auth/login",
+              "host": ["{{LOCAL_HOST}}"],
+               "path": ["api", "v1", "auth", "login"]
+            }
+          },
+          "response": []
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "LOCAL_HOST",
+      "value": "http://localhost:8080"
+    }
+  ]
+}
