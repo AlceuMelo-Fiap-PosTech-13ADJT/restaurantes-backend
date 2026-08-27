@@ -5,6 +5,7 @@
 ![MySQL](https://img.shields.io/badge/mysql-%2300F449.svg?style=flat&logo=mysql&logoColor=white)
 ![Docker](https://img.shields.io/badge/docker-%230db7ed.svg?style=flat&logo=docker&logoColor=white)
 ![Swagger](https://img.shields.io/badge/swagger-%23851177.svg?style=flat&logo=swagger&logoColor=white)
+[![License: MIT](https://img.shields.io/badge/license-MIT-blue)](https://opensource.org/licenses/MIT)
 
 > **Pós Tech em Arquitetura e Desenvolvimento em JAVA - FIAP**  
 > Projeto realizado como requisito do __Tech Challenge__ da **Fase 1**  
@@ -121,3 +122,9 @@ Todas as falhas são capturadas pelo `ControllerExceptionHandler` e retornadas n
   - *Em arquivo*: Coleção completa de testes disponível no diretório `/collection`.
 
 ---
+
+## ©️ Licença
+
+O código deste projeto é disponibilizado sob a [licença MIT](https://opensource.org/licenses/MIT).
+
+*© 2026 Alceu Luís de Andrade Melo*
